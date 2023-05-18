@@ -314,17 +314,14 @@ class Level:
                 #    player.collide_bottom = False
                 firstIntersection, lastIntersection = self.getFirstAndLastPointsOfCollision(collisionMask)
                 if firstIntersection:
-                    pygame.draw.rect(self.surface, (100, 100, 255), (
-                    player.rect.x + firstIntersection[0], player.rect.y + firstIntersection[1], 1, 1))
-                    pygame.draw.rect(self.surface, (100, 100, 255), (
-                    player.rect.x + lastIntersection[0], player.rect.y + lastIntersection[1], 1, 1))
+                    pygame.draw.rect(self.surface, (100, 100, 255), (player.rect.x + firstIntersection[0], player.rect.y + firstIntersection[1], 1, 1))
+                    pygame.draw.rect(self.surface, (100, 100, 255), (player.rect.x + lastIntersection[0], player.rect.y + lastIntersection[1], 1, 1))
 
                 if realCollisionOffset2:  # or almostCollisionOffset1:
                     print("slope collision from below detected, real:", realCollisionOffset2, "almost:",
                           almostCollisionOffset1)
                     pygame.draw.rect(self.surface, (255, 255, 255), (headslope.rect.x + realCollisionOffset2[0], headslope.rect.y + realCollisionOffset2[1], 1, 1))
                 if realCollisionOffset2:
-
                     verticalOffset = lastIntersection[1] - firstIntersection[1]
                     if verticalOffset > maxtopVerticalOffset:
                         maxtopVerticalOffset = verticalOffset
@@ -340,7 +337,6 @@ class Level:
                 offset = (slope.rect.left - player.rect.left, slope.rect.top - player.rect.top - 1)
                 almostCollisionOffset = player.mask.overlap(slope.mask, offset)  # if not None: player is exactly 1 pixel above slope, aka touching the slope, without being inside of it
                 realCollisionOffset = pygame.sprite.collide_mask(player, slope)  # if not None: Player has at least 1 pixel inside the slope
-
                 if realCollisionOffset or almostCollisionOffset:
                     print("slope collision from above detected, real:", realCollisionOffset, "almost:",
                           almostCollisionOffset)
@@ -356,52 +352,13 @@ class Level:
                     if maxVerticalOffset:
                         player.rect.bottom -= maxVerticalOffset
                         if realCollisionOffset:
-                            verticalOffset = player.rect.height - realCollisionOffset[
-                                1]  # move the player by this amount, and he'll be touching the current ground tile without being inside of it
+                            verticalOffset = player.rect.height - realCollisionOffset[1]  # move the player by this amount, and he'll be touching the current ground tile without being inside of it
                             if verticalOffset > maxVerticalOffset:
                                 maxVerticalOffset = verticalOffset
                             self.collision_types['bottom'] = True
 
                     if maxVerticalOffset:
                         player.rect.bottom -= maxVerticalOffset
-
-        maxtopVerticalOffset = 0
-        for headslope in self.headslopesgroup.sprites():
-            if headslope.rect.colliderect(player.rect):
-                topoffset = (headslope.rect.left - player.rect.left, headslope.rect.top - player.rect.top + 1)
-                almostCollisionOffset1 = player.mask.overlap(headslope.mask, topoffset)
-                realCollisionOffset2 = pygame.sprite.collide_mask(player, headslope)
-                if almostCollisionOffset1:
-                    player.vertical_momentum = 0  # remove vertical momentum
-                    player.collide_bottom = False
-                if realCollisionOffset2:
-                    verticalOffset2 = player.rect.height + realCollisionOffset2[1]
-                    if verticalOffset2 > maxtopVerticalOffset:
-                        maxtopVerticalOffset = verticalOffset2
-                        player.collide_bottom = False
-        if maxtopVerticalOffset:
-            player.rect.top += maxtopVerticalOffset
-
-
-        for tile in self.tiles.sprites():
-            if tile.rect.colliderect(player.rect):
-                if player.movement[1] > 0:
-                    player.rect.bottom = tile.rect.top
-                    self.collision_types['bottom'] = True
-                if player.movement[1] < 0:
-                    player.rect.top = tile.rect.bottom
-                    self.collision_types['top'] = True
-
-            if self.collision_types['bottom']:
-                player.collide_bottom = True
-                player.air_timer = 0
-                player.vertical_momentum = 0
-            else:
-                player.collide_bottom = False
-                player.air_timer += 1
-
-            if self.collision_types['top']:
-                player.vertical_momentum = 0
 
     def coin_collision(self, player):
         for coin in self.coin.sprites():

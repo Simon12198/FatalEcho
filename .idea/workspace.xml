@@ -4,29 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="33c247da-1e0d-4f0d-aa22-2ea3cb81e57e" name="Changes" comment="copy">
-      <change afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/Terrain/Grass.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/Terrain/Grass/Grass.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/Terrain/Grass/Grass.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/Terrain/Slopes/Slopes.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/Terrain/Slopes/Slopes.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Grass.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Grass.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Mushroom.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Mushroom.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Slopes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Slopes.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Spawn.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Spawn.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Swordsman.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Swordsman.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_TopSlopes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_TopSlopes.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Trees.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Trees.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/enemy.py" beforeDir="false" afterPath="$PROJECT_DIR$/enemy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/level_map.py" beforeDir="false" afterPath="$PROJECT_DIR$/level_map.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
-    </list>
+    <list default="true" id="33c247da-1e0d-4f0d-aa22-2ea3cb81e57e" name="Changes" comment="copy" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,7 +44,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684414498118</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="copy">
+      <created>1684446134453</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1684446134453</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
