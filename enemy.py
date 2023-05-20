@@ -3,7 +3,8 @@ SCREEN_WIDTH = 1200
 screen_height = 640
 WINDOW_SIZE = (SCREEN_WIDTH, screen_height)  # set up window size
 screen = pygame.display.set_mode(WINDOW_SIZE)  # initiate screen
-import player
+from animation import load_animations
+
 class Mushroom(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -40,7 +41,87 @@ class Mushroom(pygame.sprite.Sprite):
             self.current_mush = 0
         self.image = self.mush[int(self.current_mush)]
         self.image = pygame.transform.flip(self.image, self.flip, False)
+class Imposter(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.attack_animation = False
+        self.reveal = []
+        self.reveal.append(pygame.image.load('data/graphics/images/imposter_1.png'))
+        self.reveal.append(pygame.image.load('data/graphics/images/imposter_2.png'))
+        self.reveal.append(pygame.image.load('data/graphics/images/imposter_3.png'))
+        self.reveal.append(pygame.image.load('data/graphics/images/imposter_4.png'))
+        self.reveal.append(pygame.image.load('data/graphics/images/tree_attack_1.png'))
+        self.reveal.append(pygame.image.load('data/graphics/images/tree_attack_2.png'))
+        self.reveal.append(pygame.image.load('data/graphics/images/tree_attack_3.png'))
+        self.reveal.append(pygame.image.load('data/graphics/images/tree_attack_4.png'))
+        self.current_impos = 0
+        self.image = self.reveal[self.current_impos]
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+    def attack(self):
+        self.attack_animation = True
+    def update(self, scroll):
+        self.rect.x -= scroll[0]
+        self.rect.y -= scroll[1]
+        if self.attack_animation == True:
+            self.current_impos += 0.25
+            if int(self.current_impos) >= len(self.reveal):
+                self.current_impos = 0
+                self.attack_animation = False
+        self.image = self.reveal[int(self.current_impos)]
+'''class Imposter(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.import_animation()
+        self.frame = 0
+        self.action = ''
+        self.flip = False
+        self.change_action('idle')
+        self.attack_animation = False
+        self.reveal = []
+        self.image = self.animations[self.action][self.anim[self.frame]]
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+    def flip(self, boolean):
+        self.flip = boolean
+    def attack_begin(self):
+        self.attack_animation = True
+    def change_action(self, new_action):
+        if self.action == new_action:
+            pass
+        else:
+            self.action = new_action
+            self.frame = 0
+            self.anim = self.animation_frames[self.action]
 
+    def implement_anim(self, loop):
+        self.frame += 1
+        while self.frame >= len(self.anim):
+            if loop:
+                self.frame -= len(self.anim)
+        image = self.animations[self.action][self.anim[self.frame]]
+        self.image = pygame.transform.flip(image, self.flip, False)
+
+    def import_animation(self):
+        path = 'data/graphics/'
+        self.animations = {'idle': [], 'attack': []}
+        animation_data = load_animations(path)
+        self.animation_frames = animation_data[0]
+        for animation in self.animations.keys():
+            self.animations[animation] = animation_data[1]
+    def status(self):
+        if self.attack_animation == True:
+            self.change_action('attack')
+        else:
+            self.change_action('idle')
+
+    def update(self, scroll):
+        self.rect.x -= scroll[0]
+        self.rect.y -= scroll[1]
+        self.implement_anim(True)
+        self.status()'''
 class Swordsman(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -102,20 +183,10 @@ class Swordsman(pygame.sprite.Sprite):
             self.current_sword = 0
         self.image = self.man[int(self.current_sword)]
         self.image = pygame.transform.flip(self.image, self.flip, False)
+        # attacking animation
         self.current_frame += 0.25
-    #attacking animation
         if self.attack_animation:
             if int(self.current_frame) >= len(self.attacking):
                 self.current_frame = 0
             self.attack_image = self.attacking[int(self.current_frame)]
             self.attack_image = pygame.transform.flip(self.attack_image, self.flip, False)
-
-class Blob(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        self.img = pygame.image.load('data/graphics/images/blob_img.png').convert_alpha()
-        self.rect = self.img.get_rect()
-        self.blob_group = pygame.sprite.Group()
-        self.rect.x = x
-        self.rect.y = y
-        self.flip = False

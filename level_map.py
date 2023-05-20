@@ -1,9 +1,10 @@
-import time
+import time, score
+import pygame.transform
 from player import *
 from csv_loader import *
 import enemy
 
-tile_size = 32
+tile_size = 16
 
 SCREEN_WIDTH = 1200
 screen_height = 640
@@ -11,7 +12,8 @@ screen_height = 640
 rescaled_width = 600
 rescaled_height = 320
 cooldown_tracker = 0
-
+def logo(img, x, y):
+    screen.blit(img, (x,y))
 
 class Tiles(pygame.sprite.Sprite):
     def __init__(self, size, loc):
@@ -32,29 +34,35 @@ class ground_tile(Tiles):
 
 
 class Level:
-
-
-    def __init__(self, game_map, path, surface):
+    def __init__(self, game_map, path, surface, name, last_level = False):
         self.game_map = game_map
         self.surface = surface
+        self.name = name
         self.game_map = self.load_map(path)
+        self.path = path
         self.bg_drawn = False
         self.player_direction = 0
         self.merchant_beside = 0
         self.mushroom_inv = 0
+        self.mushroom_taken = 0 #for special ending if possible
+        self.coin_inv = 0
+        # used to calcuate final score
+        self.final_score = True
+        self.last_level = last_level
         self.damage = 10
         self.dead = False
-        self.health = 20
-        self.max_health = 20
+        self.done = False
+        self.health = 10
+        self.max_health = 10
         self.damage_taken = False
         # heart images
         self.full_heart = pygame.image.load('data/graphics/bg_images/heart.png').convert_alpha()
         self.half_heart = pygame.image.load('data/graphics/bg_images/half_heart.png').convert_alpha()
         self.empty_heart = pygame.image.load('data/graphics/bg_images/empty_heart.png').convert_alpha()
-
         self.player = pygame.sprite.GroupSingle()
         self.tiles = pygame.sprite.Group()
         self.bg_objects = pygame.sprite.Group()
+        self.imposter_group = pygame.sprite.Group()
         self.heart_objects = pygame.sprite.Group()
         self.coin = pygame.sprite.Group()
         self.Death = pygame.sprite.Group()
@@ -67,12 +75,15 @@ class Level:
         self.merchant_group = pygame.sprite.Group()
         self.Spawn = pygame.sprite.GroupSingle()
         self.End = pygame.sprite.Group()
+        self.merchant_speak = False
+        self.merchant_speak1 = False
         # use to calculate score
         self.score = 10000
         self.coin_count = 0
         self.start_time = time.time()
         self.player_on_slope = False
         self.bg_imgs = []
+        self.level_type = 'Eric'
         #background images added to list
         for i in range(1, 6):
             bg_img = pygame.image.load('data/graphics/bg_images/' + f'forest-{i}.png').convert_alpha()
@@ -87,8 +98,8 @@ class Level:
         self.create_sprite(self.Mushroom, 'Mushroom')
         self.Swordsman = import_csv_files(self.game_map['Swordsman'])
         self.create_sprite(self.Swordsman, 'Swordsman')
-        self.Blob = import_csv_files(self.game_map['Blobs'])
-        self.create_sprite(self.Blob, 'Blobs')
+        self.Imposter = import_csv_files(self.game_map['Imposter'])
+        self.create_sprite(self.Imposter, 'Imposter')
         self.merchantslayout = import_csv_files(self.game_map['Merchant'])
         self.create_sprite(self.merchantslayout, 'Merchant')
 
@@ -108,12 +119,39 @@ class Level:
         self.create_sprite(self.death, 'Death')
 
 
-    def armour_trade(self):
-        self.health += 1
-        self.mushroom_inv -= 8
-    def weapons_trade(self, amount):
-        self.damage += 2
-        self.mushroom_inv -= 10
+    def armour_trade_check(self):
+        if self.coin_inv >= 5:
+            return True
+        else:
+            return False
+
+    def armour_trade(self, boolean):
+        if boolean == True:
+            self.coin_inv -= 20
+            self.health += 1
+            self.max_health += 1
+        elif boolean == False:
+            return True
+
+    def mushroom_count(self, int):
+        if self.mushroom_inv < int:
+            return True
+    def coin_counting(self, int):
+        if self.coin_inv < int:
+            return True
+    def mushroom_trade_check(self):
+        if self.mushroom_inv >= 1:
+            return True
+        else:
+            return False
+
+
+    def mushroom_trade(self, boolean):
+        if boolean == True:
+            self.mushroom_inv -= 1
+            self.coin_inv += 5
+        elif boolean == False:
+            return True
 
     def load_map(self, path):
         level_data = {}
@@ -126,80 +164,86 @@ class Level:
             level_name = paths[2]
             level_data[name] = path + level_name + '_' + name + '.csv'
         return (level_data)
-
     def create_sprite(self, layout, type):
-
+        global tile_size
+        if self.path == 'data/levels/level_0':
+            self.level_type = 'Eric'
+            tile_size = 16
+        elif self.path == 'data/levels/level_1':
+            self.level_type = 'Simon'
+            tile_size = 32
         row_index = 0
         for row in layout:
             col_index = 0
             for col in row:
                 if col != '-1':
                     if type == 'Grass':
-                        terrain_layout = slicing_tiles('data/graphics/Terrain/Grass/Grass.png')
+                        print(col)
+                        terrain_layout = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Grass/Grass.png', (tile_size, tile_size))
                         tile = terrain_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], tile)
+                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], tile)
                         self.tiles.add(sprite)
                     if type == 'Gold':
-                        gold = slicing_tiles('data/graphics/Terrain/Coin/gold_coin.png')
+                        gold = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Coin/gold_coin.png', (tile_size, tile_size))
                         tiles = gold[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], tiles)
+                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], tiles)
                         self.coin.add(sprite)
                     if type == 'Death':
-                        death = slicing_tiles('data/graphics/Terrain/Death/Death.png')
+                        death = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Death/Death.png', (tile_size, tile_size))
                         tileset = death[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], tileset)
+                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], tileset)
                         self.Death.add(sprite)
                     if type == 'Trees':
-                        tree_layout = slicing_tiles('data/graphics/Terrain/Tree/Tree_tileset.png')
+                        tree_layout = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Tree/Tree_tileset.png', (tile_size, tile_size))
                         tiled = tree_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], tiled)
+                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], tiled)
                         self.tree.add(sprite)
                     if type == 'Merchant':
-                        tree_layout = slicing_tiles('data/graphics/images/merchant.png')
+                        tree_layout = slicing_tiles('data/graphics/images/merchant.png', (tile_size, tile_size))
                         tiled = tree_layout[int(col)]
                         sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], tiled)
                         self.merchant_group.add(sprite)
                     if type == 'Mushroom':
                         mush_layout = slicing_tiles('data/graphics/images/mushroom_0.png', (16, 16))
                         tiled = mush_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], tiled)
-                        mushroom = enemy.Mushroom(col_index * 32, row_index * 32 + 18)
+                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], tiled)
+                        mushroom = enemy.Mushroom(col_index * tile_size, row_index * tile_size + 18)
                         self.mushroom_group.add(mushroom)
                     if type == 'Swordsman':
-                        enemy_layout = slicing_tiles('data/graphics/images/swordsman.png')
-                        tiled = enemy_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], tiled)
-                        swordsman = enemy.Swordsman(col_index * 32, row_index * 32)
+                        enemy_layout = slicing_tiles('data/graphics/images/swordsman.png', (tile_size, tile_size))
+#                       tiled = enemy_layout[int(col)]
+ #                      sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], tiled)
+                        swordsman = enemy.Swordsman(col_index * tile_size, row_index * tile_size)
                         self.swordsman_group.add(swordsman)
-                    if type == 'Blobs':
-                        blob_layout = slicing_tiles('data/graphics/images/blob_img.png', (97, 30))
-                        tiled = blob_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], tiled)
-                        blob = enemy.Blob(col_index * 32, row_index * 32 + 15)
-                        self.blob_group.add(sprite)
+                    if type == 'Imposter':
+                        imposter_layout = slicing_tiles('data/graphics/images/imposter_tree.png', (tile_size, tile_size))
+                        tiled = imposter_layout[int(col)]
+                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], tiled)
+                        imposter = enemy.Imposter(col_index * tile_size, row_index * tile_size - 32)
+                        self.imposter_group.add(imposter)
                     if type == 'Slopes':
-                        slope_layout = slicing_tiles('data/graphics/Terrain/Slopes/Slopes.png')
+                        slope_layout = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Slopes/Slopes.png', (tile_size, tile_size))
                         ramps = slope_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], ramps)
+                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], ramps)
                         self.slopesgroup.add(sprite)
-                    if type == 'TopSlopes':
-                        slope_layout = slicing_tiles('data/graphics/Terrain/Slopes/Slopes.png')
+                    if type == 'TopSlopes' and self.level_type == 'Simon':
+                        slope_layout = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Slopes/Slopes.png', (tile_size, tile_size))
                         topramp = slope_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], topramp)
+                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], topramp)
                         self.headslopesgroup.add(sprite)
                     if type == 'Spawn':
-                        life = slicing_tiles('data/graphics/Terrain/Spawn/Spawn.png')
+                        life = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Spawn/Spawn.png', (tile_size, tile_size))
                         born_set = life[int(col)]
                         if col == '0':
-                            sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], born_set)
+                            sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], born_set)
                             if not self.dead:
                                 self.Spawn.add(sprite)
                             self.dead = True
-                            player = Player([col_index * 32, row_index * 32])
+                            player = Player([col_index * tile_size, row_index * tile_size])
                             self.player.add(player)
                             self.dead = False
                         if col == '1':
-                            sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], born_set)
+                            sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], born_set)
                             self.End.add(sprite)
                 col_index += 1
             row_index += 1
@@ -244,27 +288,14 @@ class Level:
             player.y += player.movement[1]
             player.rect.y = int(player.y)
 
-            maxVerticalOffset = 0  # in cases where player collides with multiple slopes at once, we should move him by maximum required amount, otherwise he'll be moved up next frame. Less jitter
-            for slope in self.slopesgroup.sprites():
-                if slope.rect.colliderect(player.rect):
-                    offset = (slope.rect.left - player.rect.left, slope.rect.top - player.rect.top-1)
-                    almostCollisionOffset = player.mask.overlap(slope.mask, offset)  # if not None: player is exactly 1 pixel above slope, aka touching the slope, without being inside of it
-                    realCollisionOffset = pygame.sprite.collide_mask(player, slope)  # if not None: Player has at least 1 pixel inside the slope
             self.slope_collision_from_above(player)
             self.slope_collision_from_below(player)
-            for tile in self.tiles.sprites():
-                if tile.rect.colliderect(player.rect):
-                    if player.movement[1] > 0:
-                        player.rect.bottom = tile.rect.top
-                        self.collision_types['bottom'] = True
-                    if player.movement[1] < 0:
-                        player.rect.top = tile.rect.bottom
-                        self.collision_types['top'] = True
-
+            self.rectangle_collision(player)
             self.mushroom_collision(player)
             self.merchant_collision(player)
             self.death_collision(player)
             self.coin_collision(player)
+            self.end_collision(player)
 
             if self.collision_types['bottom']:
                 player.collide_bottom = True
@@ -276,6 +307,17 @@ class Level:
 
             if self.collision_types['top']:
                 player.vertical_momentum = 0
+
+    def rectangle_collision(self, player):
+        for tile in self.tiles.sprites():
+            if tile.rect.colliderect(player.rect):
+                if player.movement[1] > 0:
+                    player.rect.bottom = tile.rect.top
+                    self.collision_types['bottom'] = True
+                if player.movement[1] < 0:
+                    player.rect.top = tile.rect.bottom
+                    self.collision_types['top'] = True
+
     def mushroom_collision(self, player):
         for mushroom in self.mushroom_group.sprites():
             mushroom_top = mushroom.rect.top
@@ -284,6 +326,7 @@ class Level:
                 if mushroom.rect.colliderect(player.rect):
                     self.mushroom_group.remove(mushroom)
                     self.mushroom_inv += 1
+                    self.mushroom_taken += 1
 
     def getFirstAndLastPointsOfCollision(self, collisionMask):
         firstPoint = None
@@ -300,34 +343,28 @@ class Level:
 
     def slope_collision_from_below(self, player):
         maxtopVerticalOffset = 0
+
         for headslope in self.headslopesgroup.sprites():
             if headslope.rect.colliderect(player.rect):
                 topoffset = (headslope.rect.left - player.rect.left, headslope.rect.top - player.rect.top + 1)
-                almostCollisionOffset1 = player.mask.overlap(headslope.mask, topoffset)
-                realCollisionOffset2 = pygame.sprite.collide_mask(headslope, player)
-                collisionMask = player.mask.overlap_mask(headslope.mask, topoffset)
-                if collisionMask and realCollisionOffset2:
-                    print("yes mask")
-                    print(self.getFirstAndLastPointsOfCollision(collisionMask))
-                # if almostCollisionOffset1:
-                #    player.vertical_momentum = 0  # remove vertical momentum
-                #    player.collide_bottom = False
-                firstIntersection, lastIntersection = self.getFirstAndLastPointsOfCollision(collisionMask)
-                if firstIntersection:
-                    pygame.draw.rect(self.surface, (100, 100, 255), (player.rect.x + firstIntersection[0], player.rect.y + firstIntersection[1], 1, 1))
-                    pygame.draw.rect(self.surface, (100, 100, 255), (player.rect.x + lastIntersection[0], player.rect.y + lastIntersection[1], 1, 1))
 
-                if realCollisionOffset2:  # or almostCollisionOffset1:
-                    print("slope collision from below detected, real:", realCollisionOffset2, "almost:",
-                          almostCollisionOffset1)
-                    pygame.draw.rect(self.surface, (255, 255, 255), (headslope.rect.x + realCollisionOffset2[0], headslope.rect.y + realCollisionOffset2[1], 1, 1))
-                if realCollisionOffset2:
+                collisionMask = player.mask.overlap_mask(headslope.mask, topoffset)
+                firstIntersection, lastIntersection = self.getFirstAndLastPointsOfCollision(collisionMask)
+
+                if firstIntersection:
                     verticalOffset = lastIntersection[1] - firstIntersection[1]
                     if verticalOffset > maxtopVerticalOffset:
                         maxtopVerticalOffset = verticalOffset
-                        # player.collide_bottom = False
+
+                if headslope.rect.right == player.rect.right:
+                    player.rect.x += 1
+                    player.rect.y += 1
+
+                if headslope.rect.left == player.rect.left:
+                    player.rect.x -= 1
+                    player.rect.y += 1
+
         if maxtopVerticalOffset:
-            print('maxtopVerticalOffset: ', maxtopVerticalOffset)
             player.rect.top += maxtopVerticalOffset
 
     def slope_collision_from_above(self, player):
@@ -337,33 +374,27 @@ class Level:
                 offset = (slope.rect.left - player.rect.left, slope.rect.top - player.rect.top - 1)
                 almostCollisionOffset = player.mask.overlap(slope.mask, offset)  # if not None: player is exactly 1 pixel above slope, aka touching the slope, without being inside of it
                 realCollisionOffset = pygame.sprite.collide_mask(player, slope)  # if not None: Player has at least 1 pixel inside the slope
-                if realCollisionOffset or almostCollisionOffset:
-                    print("slope collision from above detected, real:", realCollisionOffset, "almost:",
-                          almostCollisionOffset)
-                    if almostCollisionOffset:
-                        self.collision_types['bottom'] = True  # remove vertical momentum
                 if almostCollisionOffset:
-                    self.collision_types['bottom'] = True  # remove vertical momentum
-                    if realCollisionOffset:
-                        verticalOffset = player.rect.height - realCollisionOffset[1]  # move the player by this amount, and he'll be touching the current ground tile without being inside of it
-                        if verticalOffset > maxVerticalOffset:
-                            maxVerticalOffset = verticalOffset
-                        self.collision_types['bottom'] = True
-                    if maxVerticalOffset:
-                        player.rect.bottom -= maxVerticalOffset
+                    if almostCollisionOffset[1] > slope.rect.height / 2:
+                        self.collision_types['bottom'] = True  # remove vertical momentum
+
                         if realCollisionOffset:
                             verticalOffset = player.rect.height - realCollisionOffset[1]  # move the player by this amount, and he'll be touching the current ground tile without being inside of it
                             if verticalOffset > maxVerticalOffset:
                                 maxVerticalOffset = verticalOffset
-                            self.collision_types['bottom'] = True
 
-                    if maxVerticalOffset:
-                        player.rect.bottom -= maxVerticalOffset
+        if maxVerticalOffset:
+            player.rect.bottom -= maxVerticalOffset
 
     def coin_collision(self, player):
         for coin in self.coin.sprites():
             if coin.rect.colliderect(player.rect):
                 self.coin.remove(coin)
+                self.coin_inv += 1
+    def end_collision(self, player):
+        for end_tile in self.End.sprites():
+            if end_tile.rect.colliderect(player.rect):
+                self.end_level()
 
     def merchant_collision(self, player):
         self.merchant_beside = 0
@@ -383,13 +414,20 @@ class Level:
             player.x = player.rect.x
             player.x += player.movement[0]
             player.rect.x = int(player.x)
+            for imposter in self.imposter_group.sprites():
+                if imposter.rect.colliderect(player.rect):
+                    self.health -= 4
             for swordsman in self.swordsman_group.sprites():
                 if swordsman.rect.colliderect(player.rect):
                     self.health -= 2
-                    enemy.Swordsman.attack_animation = True
                     # play animation of swordman swinging sword in direction of player
 
-
+    def end_level(self):
+        if self.last_level:
+            score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, 0], self.name)
+            self.final_score = True
+        score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, 0])
+        self.done = True
     def merchant_check(self):
         if self.merchant_beside != 0:
             return True
@@ -403,8 +441,7 @@ class Level:
         if self.scroll[0] == 0 and self.scroll[1] == 0:
             player = Player((0, 0))
             self.player.add(player)
-            print('YOU DIED')
-            self.health = 20
+            self.health = 10
             self.dead = False
     def draw_img(self, img, x, y):
         self.surface.blit(img, (x, y))
@@ -429,7 +466,7 @@ class Level:
                 self.surface.blit(self.half_heart, (heart * 30 + 5, 10))
             else:
                 self.surface.blit(self.empty_heart, (heart * 30 + 5, 10))
-        if self.health == 0:
+        if self.health <= 0:
             self.dead = True
     def button_held(self):
         player = self.player.sprite
@@ -456,7 +493,10 @@ class Level:
         self.headslopesgroup.draw(self.surface)
         self.mushroom_group.update(self.scroll)
         self.mushroom_group.draw(self.surface)
+        self.imposter_group.update(self.scroll)
+        self.imposter_group.draw(self.surface)
 
+        self.End.update(self.scroll)
         self.bg_objects.update(self.scroll)
         self.bg_objects.draw(self.surface)
         self.heart_objects.draw(self.surface)

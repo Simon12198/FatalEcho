@@ -3,6 +3,34 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\data\levels\level_0\level_0_Grass.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data\levels\level_0\level_0_Imposter.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data\levels\level_3\Level_3_Grass.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data\levels\level_3\Level_3_Imposter.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\data\levels\level_3\Level_3_Merchant.csv">
           <value>
             <Attribute>
@@ -11,6 +39,13 @@
           </value>
         </entry>
         <entry key="\data\levels\level_3\Level_3_Slopes.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data\levels\level_3\Level_3_Swordsman.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

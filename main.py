@@ -2,7 +2,6 @@ import pygame, sys  # import pygame and sys
 import button
 from level_map import Level
 from pygame.locals import *
-from enemy import Mushroom
 import math
 
 pygame.init()  # initiate pygame
@@ -51,9 +50,16 @@ sword_icon_img = pygame.image.load('data/graphics/images/sword_icon.png').conver
 shield_icon_img = pygame.image.load('data/graphics/images/shield_icon.png').convert()
 mushroom_trading_img = pygame.image.load('data/graphics/images/mushroom_trade.png').convert_alpha()
 mushroom_trade_img = pygame.transform.scale(mushroom_trading_img, (400, 300))
-buy_img = pygame.image.load('data/graphics/images/buy_button.png').convert()
-sell_img = pygame.image.load('data/graphics/images/sell_button.png').convert()
+buy_img = pygame.image.load('data/graphics/images/buy_button.png').convert_alpha()
+sell_img = pygame.image.load('data/graphics/images/sell_button.png').convert_alpha()
 plus_1_img = pygame.image.load('data/graphics/images/plus_1.png').convert_alpha()
+coins_inv_img = pygame.image.load('data/graphics/images/coin_inv_img.png').convert_alpha()
+coins_needed_img = pygame.image.load('data/graphics/images/coins_needed.png').convert_alpha()
+mushroom_inv_img = pygame.image.load('data/graphics/images/mushroom_inv_img.png').convert_alpha()
+mushroom_trade_bubble = pygame.image.load('data/graphics/images/mushroom_trade_bubble.png').convert_alpha()
+armour_trade_bubble = pygame.image.load('data/graphics/images/armour_trade_bubble.png').convert_alpha()
+mushroom_trade_bubble = pygame.transform.scale(mushroom_trade_bubble, (1200, 200))
+armour_trade_bubble = pygame.transform.scale(armour_trade_bubble, (1200, 200))
 # create button instances
 #to remember order of function:
 #(self, x, y, image, scale)
@@ -65,17 +71,18 @@ Levels_3_button = button.Button(SCREEN_WIDTH*1/2 + 200,screen_height * 2/4 - 100
 Levels_4_button = button.Button(SCREEN_WIDTH*1/2 - 400,screen_height * 7/8 - 100, Level4_img, 1)
 resume_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 1/4, resume_img, 1.2)
 options_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 2/4, options_img, 1.2)
-buy_button = button.Button(SCREEN_WIDTH*1/2,screen_height * 1/4, buy_img, 1.2)
-armour_button = button.Button(SCREEN_WIDTH /2, screen_height/2 + 140, buy_img, 1.2)
+buy_button = button.Button(SCREEN_WIDTH*1/2 - 40,screen_height * 1/4, buy_img, 1.2)
+armour_button = button.Button(SCREEN_WIDTH /2 - 140, screen_height * 7/8 - 80, buy_img, 1.2)
 weapons_button = button.Button(SCREEN_WIDTH /2 + 150, screen_height/2 + 140, buy_img, 1.2)
-sell_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 2/4, sell_img, 1.2)
-sellmushrooms_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 2/4 + 40, sell_img, 1.2)
+sell_button = button.Button(SCREEN_WIDTH*1/2 - 40,screen_height * 2/4, sell_img, 1.2)
+sellmushrooms_button = button.Button(SCREEN_WIDTH*1/2 - 130,screen_height * 2/4 + 130, sell_img, 1.2)
 quit_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 7/8, quit_img, 1.2)
 audio_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 1/4 - 50, audio_img, 1.2)
 keys_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 3/4 - 100, keys_img, 1.2)
-merchant_back_button = button.Button(SCREEN_WIDTH*1/2 - 40,screen_height * 7/8 - 20, back_img, 1.2)
-merchant_back1_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 7/8 - 80, back_img, 1.2)
+merchant_back_button = button.Button(SCREEN_WIDTH*1/2 + 40,screen_height * 7/8 - 80, back_img, 1.2)
+merchant_back1_button = button.Button(SCREEN_WIDTH*1/2 - 40,screen_height * 7/8 - 20, back_img, 1.2)
 back_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 7/8 - 50, back_img, 1.2)
+mushroom_back_button = button.Button(SCREEN_WIDTH*1/2 + 50,screen_height * 2/4 + 130, back_img, 1.2)
 back1_button = button.Button(SCREEN_WIDTH/2,screen_height/2, back_img, 1.2)
 easter_egg_button = button.Button(SCREEN_WIDTH*1/2 - 200,screen_height * 1/5 - 100, easter_egg_img, 1)
 sound_down_music_button = button.Button(SCREEN_WIDTH*1/2 + 200, screen_height * 1/5 + 100, lower_volume_img, 1)
@@ -95,6 +102,7 @@ def screen_text(text, fontsize, color, x, y):
     screen.blit(text_surface, text_rect)
 def logo(img, x, y):
     screen.blit(img, (x,y))
+
 menu_mode = "main"
 clicked = False
 time = 3500
@@ -114,24 +122,27 @@ init_music_vol = 0.4
 jump_sound = pygame.mixer.Sound("data/music/jump-sound.wav")
 land_sound = pygame.mixer.Sound("data/music/land-sound.wav")
 button_sound = pygame.mixer.Sound("data/music/menu_sound_effect.wav")
-button_sound.set_volume(0.5)
-jump_sound.set_volume(init_sfx_vol + 0.4)
 grass_walking_sound = pygame.mixer.Sound("data/music/grass-walking.wav")
-grass_walking_sound.set_volume(init_sfx_vol)
 menu_music = pygame.mixer.Sound("data/music/menu-music.wav")
-menu_music.set_volume(init_music_vol)
 pygame.mixer.music.load('data/music/music.wav')
 pygame.mixer_music.play(-1, 0.0, 5000)
-pygame.mixer.music.set_volume(init_music_vol)
 screen_change = False
 main_music = 'unpaused'
 merchant_mode = 'main'
 merchant_collide = False
-level = Level([], 'data/levels/level_3/', display)
+level = Level([], 'data/levels/level_1/', display, 'Simon')
 RUNNING, PAUSE, TITLESCREEN, STARTSCREEN, ENDSCREEN, EASTEREGG, EEPAUSE, MERCHANT = 0, 1, 2, 3, 4, 5, 6, 7
 state = TITLESCREEN
 stop_drawing = False
+merchant_speak = False
+merchant_speak1 = False
+merchant_sound = pygame.mixer.Sound("data/music/merchant_talking.wav")
+merchant_sound.set_volume(0.2)
+n = 1
 while True:
+    if level.done:
+        level = Level([], f'data/levels/level_{n}/', display,  'Simon')
+        n += 1
     for e in pygame.event.get():
         if e.type == attack:
             level.attack()
@@ -198,27 +209,50 @@ while True:
                     clicked = True
             if merchant_mode == "buy":
                 # draw pause screen buttons
-                logo(shield_icon_img, SCREEN_WIDTH / 2, screen_height/2)
+                coins = level.coin_inv
+                merchantbuy_font = pygame.font.Font(None, 50)
+                merchantbuy_surf = merchantbuy_font.render(str(coins), 1, (0, 0, 0))
+                merchantbuy_pos = [SCREEN_WIDTH * 1 / 2 + 300, screen_height * 2 / 4]
+                screen.blit(merchantbuy_surf, merchantbuy_pos)
+                logo(shield_icon_img, rescaled_width / 2 + 200, rescaled_height /2 + 20)
+                logo(coins_inv_img,SCREEN_WIDTH * 1 / 2 + 300, screen_height * 2 / 4 - 100)
+                logo(coins_needed_img,SCREEN_WIDTH * 1 / 2 + 300, screen_height * 2 / 4 + 60)
                 if armour_button.draw(screen) and clicked == False:
                     button_sound.play()
-                    print("health increased")
+                    level.armour_trade(level.armour_trade_check())
                     clicked = True
                 if merchant_back_button.draw(screen) and clicked == False:
                     button_sound.play()
                     merchant_mode = 'main'
                     clicked = True
+                if level.coin_counting(20):
+                    logo(armour_trade_bubble, 1, screen_height / 2 - 320)
+                    if merchant_speak == False:
+                        merchant_sound.play()
+                        merchant_speak = True
             if merchant_mode == "sell":
+                merchant_speak1 = False
                 # draw pause screen buttons
-                logo(mushroom_trade_img, SCREEN_WIDTH / 2 - 230, screen_height / 2 - 300)
+                mushrooms = level.mushroom_inv
+                merchant_font = pygame.font.Font(None, 50)
+                merchant_surf = merchant_font.render(str(mushrooms), 1, (0, 0, 0))
+                merchant_pos = [SCREEN_WIDTH*1/2 + 300,screen_height * 2/4]
+                screen.blit(merchant_surf, merchant_pos)
+                logo(mushroom_trade_img,SCREEN_WIDTH*1/2 - 160,screen_height * 2/4 - 180)
+                logo(mushroom_inv_img, SCREEN_WIDTH * 1 / 2 + 300, screen_height * 2 / 4 - 100)
                 if sellmushrooms_button.draw(screen) and clicked == False:
                     button_sound.play()
-                    print("sold mushrooms")
-                    print("2 gold per mushroom")
+                    level.mushroom_trade(level.mushroom_trade_check())
                     clicked = True
-                if back_button.draw(screen) and clicked == False:
+                if mushroom_back_button.draw(screen) and clicked == False:
                     button_sound.play()
                     merchant_mode = 'main'
                     clicked = True
+                if level.mushroom_count(1):
+                    logo(mushroom_trade_bubble, 0, screen_height / 2 - 320)
+                    if not merchant_speak1:
+                        merchant_sound.play()
+                        merchant_speak1 = True
         elif state == EASTEREGG:
             display.fill(LBLUE)
             if main_music == 'paused':
@@ -311,18 +345,24 @@ while True:
                 if sound_up_music_button.draw(screen) and clicked == False and init_music_vol * 100 < 96:
                     button_sound.play()
                     init_music_vol += 0.0500
+                    pygame.mixer.music.set_volume(init_music_vol)
                     clicked = True
                 if sound_down_music_button.draw(screen) and clicked == False and init_music_vol * 100 >= 5:
                     button_sound.play()
                     init_music_vol -= 0.0500
+                    pygame.mixer.music.set_volume(init_music_vol)
                     clicked = True
                 if sound_up_sound_button.draw(screen) and clicked == False and init_sfx_vol * 100 < 96:
                     button_sound.play()
                     init_sfx_vol += 0.0500
+                    button_sound.set_volume(init_sfx_vol)
+                    jump_sound.set_volume(init_sfx_vol)
                     clicked = True
                 if sound_down_sound_button.draw(screen) and clicked == False and init_sfx_vol * 100 >= 5:
                     button_sound.play()
                     init_sfx_vol -= 0.0500
+                    button_sound.set_volume(init_sfx_vol)
+                    jump_sound.set_volume(init_sfx_vol)
                     clicked = True
                 if back_button.draw(screen) and clicked == False:
                     button_sound.play()

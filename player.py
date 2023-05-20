@@ -176,14 +176,10 @@ class Player(pygame.sprite.Sprite):
         else:
             if self.movement[0] == 0:
                 self.change_action('idle')
-                '''pygame.mixer.Sound.play(grass_idle_sound)'''
             if self.movement[0] > 0:
                 self.change_action('run')
-                '''pygame.mixer.Sound.play(grass_walking_sound)'''
-
             if self.movement[0] < 0:
                 self.change_action('run')
-                '''pygame.mixer.Sound.play(grass_walking_sound)'''
 
     def health_update(self):
         self.full_hearts()
