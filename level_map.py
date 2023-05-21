@@ -4,7 +4,6 @@ from player import *
 from csv_loader import *
 import enemy
 
-tile_size = 16
 
 SCREEN_WIDTH = 1200
 screen_height = 640
@@ -14,7 +13,6 @@ rescaled_height = 320
 cooldown_tracker = 0
 def logo(img, x, y):
     screen.blit(img, (x,y))
-
 class Tiles(pygame.sprite.Sprite):
     def __init__(self, size, loc):
         super().__init__()
@@ -34,12 +32,14 @@ class ground_tile(Tiles):
 
 
 class Level:
+
+
     def __init__(self, game_map, path, surface, name, last_level = False):
         self.game_map = game_map
         self.surface = surface
         self.name = name
-        self.game_map = self.load_map(path)
         self.path = path
+        self.game_map = self.load_map(path)
         self.bg_drawn = False
         self.player_direction = 0
         self.merchant_beside = 0
@@ -51,14 +51,16 @@ class Level:
         self.last_level = last_level
         self.damage = 10
         self.dead = False
-        self.done = False
         self.health = 10
         self.max_health = 10
         self.damage_taken = False
+        self.tile_size = 16
+        self.Simon_tile_size = 32
         # heart images
         self.full_heart = pygame.image.load('data/graphics/bg_images/heart.png').convert_alpha()
         self.half_heart = pygame.image.load('data/graphics/bg_images/half_heart.png').convert_alpha()
         self.empty_heart = pygame.image.load('data/graphics/bg_images/empty_heart.png').convert_alpha()
+
         self.player = pygame.sprite.GroupSingle()
         self.tiles = pygame.sprite.Group()
         self.bg_objects = pygame.sprite.Group()
@@ -83,7 +85,7 @@ class Level:
         self.start_time = time.time()
         self.player_on_slope = False
         self.bg_imgs = []
-        self.level_type = 'Eric'
+        self.done = False
         #background images added to list
         for i in range(1, 6):
             bg_img = pygame.image.load('data/graphics/bg_images/' + f'forest-{i}.png').convert_alpha()
@@ -102,22 +104,16 @@ class Level:
         self.create_sprite(self.Imposter, 'Imposter')
         self.merchantslayout = import_csv_files(self.game_map['Merchant'])
         self.create_sprite(self.merchantslayout, 'Merchant')
-
         self.tree_layout = import_csv_files(self.game_map['Trees'])
         self.create_sprite(self.tree_layout, 'Trees')
-
         self.slope_layout = import_csv_files(self.game_map['Slopes'])
         self.slope_sprites = self.create_sprite(self.slope_layout, 'Slopes')
-
         self.headslope_layout = import_csv_files(self.game_map['TopSlopes'])
         self.headslope_sprites = self.create_sprite(self.headslope_layout, 'TopSlopes')
-
         self.spawn = import_csv_files(self.game_map['Spawn'])
         self.create_sprite(self.spawn, 'Spawn')
-
         self.death = import_csv_files(self.game_map['Death'])
         self.create_sprite(self.death, 'Death')
-
 
     def armour_trade_check(self):
         if self.coin_inv >= 5:
@@ -164,92 +160,146 @@ class Level:
             level_name = paths[2]
             level_data[name] = path + level_name + '_' + name + '.csv'
         return (level_data)
+
     def create_sprite(self, layout, type):
-        global tile_size
-        if self.path == 'data/levels/level_0':
-            self.level_type = 'Eric'
-            tile_size = 16
-        elif self.path == 'data/levels/level_1':
-            self.level_type = 'Simon'
-            tile_size = 32
-        row_index = 0
-        for row in layout:
-            col_index = 0
-            for col in row:
-                if col != '-1':
-                    if type == 'Grass':
-                        print(col)
-                        terrain_layout = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Grass/Grass.png', (tile_size, tile_size))
-                        tile = terrain_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], tile)
-                        self.tiles.add(sprite)
-                    if type == 'Gold':
-                        gold = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Coin/gold_coin.png', (tile_size, tile_size))
-                        tiles = gold[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], tiles)
-                        self.coin.add(sprite)
-                    if type == 'Death':
-                        death = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Death/Death.png', (tile_size, tile_size))
-                        tileset = death[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], tileset)
-                        self.Death.add(sprite)
-                    if type == 'Trees':
-                        tree_layout = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Tree/Tree_tileset.png', (tile_size, tile_size))
-                        tiled = tree_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], tiled)
-                        self.tree.add(sprite)
-                    if type == 'Merchant':
-                        tree_layout = slicing_tiles('data/graphics/images/merchant.png', (tile_size, tile_size))
-                        tiled = tree_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], tiled)
-                        self.merchant_group.add(sprite)
-                    if type == 'Mushroom':
-                        mush_layout = slicing_tiles('data/graphics/images/mushroom_0.png', (16, 16))
-                        tiled = mush_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], tiled)
-                        mushroom = enemy.Mushroom(col_index * tile_size, row_index * tile_size + 18)
-                        self.mushroom_group.add(mushroom)
-                    if type == 'Swordsman':
-                        enemy_layout = slicing_tiles('data/graphics/images/swordsman.png', (tile_size, tile_size))
-#                       tiled = enemy_layout[int(col)]
- #                      sprite = ground_tile(tile_size, [col_index * 32, row_index * 32], tiled)
-                        swordsman = enemy.Swordsman(col_index * tile_size, row_index * tile_size)
-                        self.swordsman_group.add(swordsman)
-                    if type == 'Imposter':
-                        imposter_layout = slicing_tiles('data/graphics/images/imposter_tree.png', (tile_size, tile_size))
-                        tiled = imposter_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], tiled)
-                        imposter = enemy.Imposter(col_index * tile_size, row_index * tile_size - 32)
-                        self.imposter_group.add(imposter)
-                    if type == 'Slopes':
-                        slope_layout = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Slopes/Slopes.png', (tile_size, tile_size))
-                        ramps = slope_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], ramps)
-                        self.slopesgroup.add(sprite)
-                    if type == 'TopSlopes' and self.level_type == 'Simon':
-                        slope_layout = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Slopes/Slopes.png', (tile_size, tile_size))
-                        topramp = slope_layout[int(col)]
-                        sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], topramp)
-                        self.headslopesgroup.add(sprite)
-                    if type == 'Spawn':
-                        life = slicing_tiles(f'data/graphics/{self.level_type}Terrain/Spawn/Spawn.png', (tile_size, tile_size))
-                        born_set = life[int(col)]
-                        if col == '0':
-                            sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], born_set)
-                            if not self.dead:
-                                self.Spawn.add(sprite)
-                            self.dead = True
-                            player = Player([col_index * tile_size, row_index * tile_size])
-                            self.player.add(player)
-                            self.dead = False
-                        if col == '1':
-                            sprite = ground_tile(tile_size, [col_index * tile_size, row_index * tile_size], born_set)
-                            self.End.add(sprite)
-                col_index += 1
-            row_index += 1
-        self.tile_sprites = self.tiles.sprites()
-        self.slope_sprite = self.slopesgroup.sprites()
-        self.headslope_sprites = self.headslopesgroup.sprites()
+        if self.path == 'data/levels/level_0/':
+            # Used to create sprite_groups to prepare for drawing
+            row_index = 0
+            for row in layout:
+                col_index = 0
+                for col in row:
+                    if col != '-1':
+                        if type == 'Grass':
+                            terrain_layout = slicing_tiles('data/graphics/EricTerrain/Grass/Grass.png')
+                            tile = terrain_layout[int(col)]
+                            sprite = ground_tile(self.tile_size, [col_index * 16, row_index * 16], tile)
+                            self.tiles.add(sprite)
+                        if type == 'Slopes':
+                            slope_layout = slicing_tiles('data/graphics/EricTerrain/Grass/Slope.png')
+                            slope = slope_layout[int(col)]
+                            sprite = ground_tile(self.tile_size, [col_index * 16, row_index * 16], slope)
+                            self.slopesgroup.add(sprite)
+                        if type == 'Gold':
+                            gold = slicing_tiles('data/graphics/EricTerrain/Coin/gold_coin.png')
+                            tiles = gold[int(col)]
+                            sprite = ground_tile(self.tile_size, [col_index * 16, row_index * 16], tiles)
+                            self.coin.add(sprite)
+                        if type == 'Death':
+                            death = slicing_tiles('data/graphics/EricTerrain/Death/Death.png')
+                            tileset = death[int(col)]
+                            sprite = ground_tile(self.tile_size, [col_index * 16, row_index * 16], tileset)
+                            self.Death.add(sprite)
+                        if type == 'Trees':
+                            if col == '0':
+                                tree_0 = slicing_tiles('data/graphics/EricTerrain/Tree/Tree_0.png', (64, 64))
+                                tree_set = tree_0[int(col)]
+                                sprite = ground_tile(self.tile_size, (col_index * 16, (row_index - 3) * 16.1), tree_set)
+                            if col == '1':
+                                tree_1 = slicing_tiles('data/graphics/EricTerrain/Tree/Tree_1.png', (64, 64))
+                                tree_1_set = tree_1[0]
+                                sprite = ground_tile(self.tile_size, (col_index * 16, (row_index - 3) * 16.1), tree_1_set)
+                            self.tree.add(sprite)
+                        if type == 'Spawn':
+                            life = slicing_tiles('data/graphics/EricTerrain/Spawn/Spawn.png')
+                            born_set = life[int(col)]
+                            if col == '0':
+                                sprite = ground_tile(self.tile_size, [col_index * 16, row_index * 16], born_set)
+                                if not self.dead:
+                                    self.Spawn.add(sprite)
+                                self.dead = True
+                                player = Player([col_index * 16, row_index * 16])
+                                self.player.add(player)
+                                self.dead = False
+                            if col == '1':
+                                sprite = ground_tile(self.tile_size, [col_index * 16, row_index * 16], born_set)
+                                self.End.add(sprite)
+                    col_index += 1
+                row_index += 1
+            self.tile_sprites = self.tiles.sprites()
+        elif self.path == 'data/levels/level_1/' or self.path == 'data/levels/level_2/' or self.path == 'data/levels/level_3/':
+            row_index = 0
+            for row in layout:
+                col_index = 0
+                for col in row:
+                    if col != '-1':
+                        if type == 'Grass':
+                            terrain_layout = slicing_tiles('data/graphics/SimonTerrain/Grass/Grass.png', (32,32))
+                            tile = terrain_layout[int(col)]
+                            sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tile)
+                            self.tiles.add(sprite)
+                        if type == 'Gold':
+                            gold = slicing_tiles('data/graphics/SimonTerrain/Coin/gold_coin.png', (32,32))
+                            tiles = gold[int(col)]
+                            sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiles)
+                            self.coin.add(sprite)
+                        if type == 'Death':
+                            death = slicing_tiles('data/graphics/SimonTerrain/Death/Death.png', (32,32))
+                            tileset = death[int(col)]
+                            sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tileset)
+                            self.Death.add(sprite)
+                        if type == 'Trees':
+                            tree_layout = slicing_tiles('data/graphics/SimonTerrain/Tree/Tree_tileset.png', (32,32))
+                            tiled = tree_layout[int(col)]
+                            sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+                            self.tree.add(sprite)
+                        if type == 'Merchant':
+                            tree_layout = slicing_tiles('data/graphics/images/merchant.png', (32,32))
+                            tiled = tree_layout[int(col)]
+                            sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+                            self.merchant_group.add(sprite)
+                        if type == 'Mushroom':
+                            mush_layout = slicing_tiles('data/graphics/images/mushroom_0.png', (16, 16))
+                            tiled = mush_layout[int(col)]
+                            sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+                            mushroom = enemy.Mushroom(col_index * 32, row_index * 32 + 18)
+                            self.mushroom_group.add(mushroom)
+                        if type == 'Swordsman':
+                            enemy_layout = slicing_tiles('data/graphics/images/swordsman.png', (32,32))
+    #                        tiled = enemy_layout[int(col)]
+     #                       sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+                            swordsman = enemy.Swordsman(col_index * 32, row_index * 32)
+                            self.swordsman_group.add(swordsman)
+                        if type == 'Imposter':
+                            imposter_layout = slicing_tiles('data/graphics/images/imposter_tree.png', (32,32))
+                            tiled = imposter_layout[int(col)]
+                            sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+                            imposter = enemy.Imposter(col_index * 32, row_index * 32 - 32)
+                            self.imposter_group.add(imposter)
+                        if type == 'Blobs':
+                            blob_layout = slicing_tiles('data/graphics/images/blob_img.png', (97, 30))
+                            tiled = blob_layout[int(col)]
+                            sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+                            blob = enemy.Blob(col_index * 32, row_index * 32 + 15)
+                            self.blob_group.add(sprite)
+                        if type == 'Slopes':
+                            slope_layout = slicing_tiles('data/graphics/SimonTerrain/Slopes/Slopes.png', (32,32))
+                            ramps = slope_layout[int(col)]
+                            sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], ramps)
+                            self.slopesgroup.add(sprite)
+                        if type == 'TopSlopes':
+                            slope_layout = slicing_tiles('data/graphics/SimonTerrain/Slopes/Slopes.png', (32,32))
+                            topramp = slope_layout[int(col)]
+                            sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], topramp)
+                            self.headslopesgroup.add(sprite)
+                        if type == 'Spawn':
+                            life = slicing_tiles('data/graphics/SimonTerrain/Spawn/Spawn.png', (32,32))
+                            born_set = life[int(col)]
+                            if col == '0':
+                                sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], born_set)
+                                if not self.dead:
+                                    self.Spawn.add(sprite)
+                                self.dead = True
+                                player = Player([col_index * 32, row_index * 32])
+                                self.player.add(player)
+                                self.dead = False
+                            if col == '1':
+                                sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], born_set)
+                                self.End.add(sprite)
+                    col_index += 1
+                row_index += 1
+            self.tile_sprites = self.tiles.sprites()
+            self.slope_sprite = self.slopesgroup.sprites()
+            self.headslope_sprites = self.headslopesgroup.sprites()
 
     def scrolling(self):
         spawn = self.Spawn.sprite
@@ -267,6 +317,7 @@ class Level:
             self.scroll = true_scroll.copy()
             self.scroll[0] = int(self.scroll[0])
             self.scroll[1] = int(self.scroll[1])
+
     def collision_movement(self):
         if self.dead == False:
             player = self.player.sprite
@@ -283,6 +334,9 @@ class Level:
                     if player.movement[0] < 0:
                         player.rect.left = tile.rect.right
                         self.collision_types['left'] = True
+            for end_tile in self.End.sprites():
+                if end_tile.rect.colliderect(player.rect):
+                    self.end_level()
 
             player.y = player.rect.y
             player.y += player.movement[1]
@@ -295,7 +349,9 @@ class Level:
             self.merchant_collision(player)
             self.death_collision(player)
             self.coin_collision(player)
-            self.end_collision(player)
+            for end_tile in self.End.sprites():
+                if end_tile.rect.colliderect(player.rect):
+                    self.end_level()
 
             if self.collision_types['bottom']:
                 player.collide_bottom = True
@@ -391,10 +447,6 @@ class Level:
             if coin.rect.colliderect(player.rect):
                 self.coin.remove(coin)
                 self.coin_inv += 1
-    def end_collision(self, player):
-        for end_tile in self.End.sprites():
-            if end_tile.rect.colliderect(player.rect):
-                self.end_level()
 
     def merchant_collision(self, player):
         self.merchant_beside = 0
@@ -496,7 +548,7 @@ class Level:
         self.imposter_group.update(self.scroll)
         self.imposter_group.draw(self.surface)
 
-        self.End.update(self.scroll)
+
         self.bg_objects.update(self.scroll)
         self.bg_objects.draw(self.surface)
         self.heart_objects.draw(self.surface)
@@ -508,6 +560,7 @@ class Level:
         self.blob_group.draw(self.surface)
         self.swordsman_group.update(self.scroll)
         self.swordsman_group.draw(self.surface)
+        self.End.update(self.scroll)
         self.Death.update(self.scroll)
         self.Spawn.update(self.scroll)
         self.merchant_group.update(self.scroll)
