@@ -1,10 +1,11 @@
-import pygame, sys  # import pygame and sys
+import pygame, sys, time  # import pygame and sys
 import button
 from level_map import Level
 from pygame.locals import *
 import math
 
 pygame.init()  # initiate pygame
+pygame.mixer.init()
 clock = pygame.time.Clock()  # set up the clock
 pygame.display.set_caption('Fatal Echo')  # set the window name
 SCREEN_WIDTH = 1200
@@ -130,7 +131,7 @@ screen_change = False
 main_music = 'unpaused'
 merchant_mode = 'main'
 merchant_collide = False
-level = Level([], 'data/levels/level_0/', display, 'Simon')
+level = Level([], 'data/levels/level_2/', display, 'Simon')
 RUNNING, PAUSE, TITLESCREEN, STARTSCREEN, ENDSCREEN, EASTEREGG, EEPAUSE, MERCHANT = 0, 1, 2, 3, 4, 5, 6, 7
 state = TITLESCREEN
 stop_drawing = False
@@ -139,10 +140,10 @@ merchant_speak1 = False
 merchant_sound = pygame.mixer.Sound("data/music/merchant_talking.wav")
 merchant_sound.set_volume(0.2)
 n = 1
+
+
 while True:
-    if level.done:
-        level = Level([], f'data/levels/level_{n}/', display,  'Simon')
-        n += 1
+
     for e in pygame.event.get():
         if e.type == attack:
             level.attack()
@@ -165,15 +166,17 @@ while True:
             if e.key == pygame.K_SPACE:
                 if level.dead == False:
                     level.button_held()
+                    level.player_jump()
                     jump_sound.play()
             if e.key == pygame.K_ESCAPE and state == RUNNING:
                 state = PAUSE
             if e.key == pygame.K_ESCAPE and state == EASTEREGG:
                 state = EEPAUSE
-            if e.type == pygame.KEYUP:
-                 if e.key == pygame.K_SPACE:
-                     if level.dead == False:
-                         level.button_released()
+        if e.type == pygame.KEYUP:
+            if e.key == pygame.K_SPACE:
+                if level.dead == False:
+                    level.button_released()
+
             if state == STARTSCREEN:
                 if pygame.key.get_pressed():
                     state = RUNNING
@@ -183,17 +186,30 @@ while True:
     else:
         if state == RUNNING:
             if main_music == 'paused':
+                menu_music.stop()
                 pygame.mixer_music.unpause()
                 main_music = 'unpaused'
-            level.draw_bg()
-            level.run()
-            level.draw_hearts()
+            if level.done == False:
+                level.draw_bg()
+                level.run()
+                level.draw_hearts()
             screen.blit(pygame.transform.scale(display, WINDOW_SIZE), (0, 0))
+            if level.done:
+                level = Level([], f'data/levels/level_{n}/', display, 'Simon')
+                n += 1
             pygame.display.update()  # update the screen
+
         elif state == MERCHANT:
             #code for merchants, buttons and everything
             screen.fill('grey')
             if merchant_mode == "main":
+                merchant_speak1 = False
+                merchant_speak = False
+                merchant_sound.stop()
+                merchant_sound.stop()
+
+                main_music = 'paused'
+                pygame.mixer_music.pause()
                 # draw pause screen buttons
                 if buy_button.draw(screen) and clicked == False:
                     button_sound.play()
@@ -228,10 +244,9 @@ while True:
                 if level.coin_counting(20):
                     logo(armour_trade_bubble, 1, screen_height / 2 - 320)
                     if merchant_speak == False:
-                        merchant_sound.play()
+                        merchant_sound.play(-1)
                         merchant_speak = True
             if merchant_mode == "sell":
-                merchant_speak1 = False
                 # draw pause screen buttons
                 mushrooms = level.mushroom_inv
                 merchant_font = pygame.font.Font(None, 50)
@@ -251,7 +266,8 @@ while True:
                 if level.mushroom_count(1):
                     logo(mushroom_trade_bubble, 0, screen_height / 2 - 320)
                     if not merchant_speak1:
-                        merchant_sound.play()
+                        print('hello')
+                        merchant_sound.play(-1)
                         merchant_speak1 = True
         elif state == EASTEREGG:
             display.fill(LBLUE)
@@ -264,6 +280,7 @@ while True:
         elif state == PAUSE:
             screen.fill(PURPLEBG)
             if main_music == 'unpaused':
+                menu_music.play(-1)
                 pygame.mixer_music.pause()
                 main_music = 'paused'
             if menu_mode == "main":

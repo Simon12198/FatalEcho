@@ -50,7 +50,10 @@ class Level:
         self.final_score = True
         self.last_level = last_level
         self.damage = 10
+        self.time_attacked = 0
+        self.start_time_attack = time.time()
         self.dead = False
+        self.done = False
         self.health = 10
         self.max_health = 10
         self.damage_taken = False
@@ -86,6 +89,7 @@ class Level:
         self.player_on_slope = False
         self.bg_imgs = []
         self.done = False
+        self.level_type = 'Simon'
         #background images added to list
         for i in range(1, 6):
             bg_img = pygame.image.load('data/graphics/bg_images/' + f'forest-{i}.png').convert_alpha()
@@ -460,19 +464,52 @@ class Level:
                 self.dead = True
                 self.health = 0
                 self.player.empty()
+
     def attack(self):
         if self.dead == False:
             player = self.player.sprite
             player.x = player.rect.x
             player.x += player.movement[0]
             player.rect.x = int(player.x)
+            self.direction = ''
+            if self.time_attacked >= 3:
+                player.invincibility = False
             for imposter in self.imposter_group.sprites():
+                imposter.attack_animation = False
                 if imposter.rect.colliderect(player.rect):
-                    self.health -= 4
+                    imposter.attack_animation = True
+                    if player.invincibility == False:
+                        player.invincibility = True
+                        self.start_time_attack = time.time()
+                        self.health -= 4
+
             for swordsman in self.swordsman_group.sprites():
+                swordsman.attack_animation = False
                 if swordsman.rect.colliderect(player.rect):
-                    self.health -= 2
-                    # play animation of swordman swinging sword in direction of player
+                    swordsman.attack_animation = True
+                    if player.invincibility == False:
+                        player.invincibility = True
+                        self.start_time_attack = time.time()
+                        self.health -= 2
+                    if player.rect.x > swordsman.rect.x:
+                        swordsman.change_flip(True)
+                        for i in range(5):
+                            player.rect.x += 3
+                            player.rect.y -= 2
+                        self.direction = 'left'
+                    elif player.rect.x < swordsman.rect.x:
+                        swordsman.change_flip(False)
+                        for i in range(5):
+                            player.rect.x -= 3
+                            player.rect.y -= 2
+                        self.direction = 'right'
+                else:
+                    if self.direction == 'left':
+                        swordsman.change_flip(False)
+                        self.direction = ''
+                    elif self.direction == 'right':
+                        swordsman.change_flip(True)
+                        self.direction = ''
 
     def end_level(self):
         if self.last_level:
@@ -485,7 +522,26 @@ class Level:
             return True
         else:
             return False
+    def player_jump(self):
+        player = self.player.sprite
+        if player.air_timer < 6:
+            player.jump_counter = 0
+            player.vertical_momentum = -4
+            player.jump_buffer = False
+        elif player.air_timer > 6:
+            player.jump_held = False
+            player.jump_buffer = True
 
+        if player.jump_buffer:
+            if player.jump_counter < 1:
+                player.vertical_momentum = -3
+                player.jump_counter += 1
+                player.jump_held = False
+            else:
+                player.jump_held = True
+
+        else:
+            player.jump_held = False
 
     def dying(self):
         self.player.empty()
@@ -530,6 +586,9 @@ class Level:
     def run(self):
         # tiles
         self.time_elasped = (time.time() - self.start_time) * 50
+        self.time_attacked = (time.time() - self.start_time_attack)
+        if self.time_attacked > 3:
+            self.time_attacked = 3
         self.scrolling()
         # death
         if self.dead:

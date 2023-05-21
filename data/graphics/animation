@@ -2,3 +2,13 @@ player idle 40;7;7;20
 player run 7;7;7;7;7;7
 player jump 1
 player fall 1
+player damage_idle 7;7;7;7
+player damage_run 7;7;7;7;7;7
+player damage_jump 7;7
+player damage_fall 7;7
+mushroom idle 40;7;7
+imposter idle 1
+imposter attack 7;7;7;7;7;7;7;7
+swordsman idle 1
+swordsman attack 7;7;7;7;7
+swordsman run 7;7;7;7;7;7;7

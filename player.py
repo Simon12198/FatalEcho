@@ -40,6 +40,8 @@ class Player(pygame.sprite.Sprite):
         # player movement
         self.x = loc[0]
         self.y = loc[1]
+        self.invincibility = False
+        self.jump_counter = 0
         self.movement = [0, 0]
         self.air_timer = 0
         self.velocity = 0
@@ -47,7 +49,6 @@ class Player(pygame.sprite.Sprite):
         self.direction = [False, False]
         self.jump_held = False
         self.gravity_multiplier = 0.2
-        self.n = 0
 
     def get_damage(self):
         if self.health > 0:
@@ -120,9 +121,10 @@ class Player(pygame.sprite.Sprite):
                     self.movement[0] -= 1
             else:
                 self.direction = [False, False]
-            if self.keys[pygame.K_SPACE]:
-                if self.air_timer < 6:
-                    self.vertical_momentum = -4
+        if self.jump_held and self.jump_counter > 0:
+            if self.air_timer < 6:
+                self.jump_held = False
+                self.vertical_momentum = -4
 
     def gravity(self):
         self.gravity_multiplier = 0.2
@@ -137,8 +139,8 @@ class Player(pygame.sprite.Sprite):
 
     def import_animation(self):
         path = 'data/graphics/'
-        self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': []}
-        animation_data = load_animations(path)
+        self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': [], 'damage_idle': [], 'damage_run': [], 'damage_jump': [], 'damage_fall': []}
+        animation_data = load_animations(path, 'player')
         self.animation_frames = animation_data[0]
         for animation in self.animations.keys():
             self.animations[animation] = animation_data[1]
@@ -169,22 +171,37 @@ class Player(pygame.sprite.Sprite):
         self.jump = False
 
         if self.movement[1] < 0:
-            self.change_action('jump')
-
+            if self.invincibility:
+                self.change_action('damage_jump')
+            else:
+                self.change_action('jump')
         elif self.movement[1] > 1:
-            self.change_action('fall')
+            if self.invincibility:
+                self.change_action('damage_fall')
+            else:
+                self.change_action('fall')
         else:
             if self.movement[0] == 0:
-                self.change_action('idle')
+                if self.invincibility:
+                    self.change_action('damage_idle')
+                else:
+                    self.change_action('idle')
             if self.movement[0] > 0:
-                self.change_action('run')
+                if self.invincibility:
+                    self.change_action('damage_run')
+                else:
+                    self.change_action('run')
             if self.movement[0] < 0:
-                self.change_action('run')
+                if self.invincibility:
+                    self.change_action('damage_run')
+                else:
+                    self.change_action('run')
 
     def health_update(self):
         self.full_hearts()
         self.empty_hearts()
         self.half_hearts()
+
 
     def update(self, scroll):
         self.get_input()
