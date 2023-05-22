@@ -88,12 +88,16 @@ class Level:
         self.start_time = time.time()
         self.player_on_slope = False
         self.bg_imgs = []
+        self.loading_imgs = []
         self.done = False
         self.level_type = 'Simon'
-        #background images added to list
+        #background and loading images added to list
         for i in range(1, 6):
             bg_img = pygame.image.load('data/graphics/bg_images/' + f'forest-{i}.png').convert_alpha()
             self.bg_imgs.append(bg_img)
+        for i in range(1, 3):
+            loading_img = pygame.image.load('data/graphics/loading_images/'+f'loading{i}.png').convert_alpha()
+            self.loading_imgs.append(loading_img)
         #creating and importing the game map files and sprites
         self.terrain_layout = import_csv_files(self.game_map['Grass'])
         self.terrain_sprites = self.create_sprite(self.terrain_layout, 'Grass')

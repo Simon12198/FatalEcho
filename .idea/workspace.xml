@@ -6,24 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="33c247da-1e0d-4f0d-aa22-2ea3cb81e57e" name="Changes" comment="copy">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/animation.py" beforeDir="false" afterPath="$PROJECT_DIR$/animation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/animation" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/animation" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/player/idle/idle_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/player/idle/idle_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/player/idle/idle_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/player/idle/idle_1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/player/idle/idle_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/player/idle/idle_2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/player/idle/idle_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/player/idle/idle_3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/player/run/run_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/player/run/run_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/player/run/run_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/player/run/run_1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/player/run/run_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/player/run/run_2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/player/run/run_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/player/run/run_3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/player/run/run_4.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/player/run/run_4.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/player/run/run_5.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/player/run/run_5.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/levels/level_0/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_0/score" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/enemy.py" beforeDir="false" afterPath="$PROJECT_DIR$/enemy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/score" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/score" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/score" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/level_map.py" beforeDir="false" afterPath="$PROJECT_DIR$/level_map.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/score.py" beforeDir="false" afterPath="$PROJECT_DIR$/score.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +106,21 @@
       <option name="project" value="LOCAL" />
       <updated>1684703690505</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="copy">
+      <created>1684705111278</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1684705111278</updated>
+    </task>
+    <task id="LOCAL-00009" summary="copy">
+      <created>1684705129833</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1684705129833</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
