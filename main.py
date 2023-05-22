@@ -115,6 +115,7 @@ finished_switch = pygame.USEREVENT + 1
 attack = pygame.USEREVENT + 2
 pygame.time.set_timer(finished_switch, time)
 pygame.time.set_timer(screenswitch, time)
+pygame.time.set_timer(attack, cooldown)
 # Audio
 pygame.mixer.init()
 
