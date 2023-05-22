@@ -516,6 +516,15 @@ class Level:
                         self.direction = ''
 
     def end_level(self):
+        loading_imgs = []
+        for i in range(1, 4):
+            loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
+            loading_img = pygame.transform.scale(loading_img, (1200, 640))
+            loading_imgs.append(loading_img)
+        for x in range(60):
+            for imgs in loading_imgs:
+                logo(imgs, 0, 0)
+                pygame.display.update()
         if self.last_level:
             score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, 0], self.name)
             self.final_score = True

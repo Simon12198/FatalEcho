@@ -132,7 +132,7 @@ main_music = 'unpaused'
 merchant_mode = 'main'
 merchant_collide = False
 level = Level([], 'data/levels/level_0/', display, 'Simon')
-RUNNING, PAUSE, TITLESCREEN, STARTSCREEN, ENDSCREEN, EASTEREGG, EEPAUSE, MERCHANT, LOADINGSCREEN = 0, 1, 2, 3, 4, 5, 6, 7, 8
+RUNNING, PAUSE, TITLESCREEN, STARTSCREEN, ENDSCREEN, EASTEREGG, EEPAUSE, MERCHANT = 0, 1, 2, 3, 4, 5, 6, 7
 state = TITLESCREEN
 stop_drawing = False
 merchant_speak = False
@@ -140,11 +140,6 @@ merchant_speak1 = False
 merchant_sound = pygame.mixer.Sound("data/music/merchant_talking.wav")
 merchant_sound.set_volume(0.2)
 n = 1
-loading_imgs = []
-for i in range(1, 4):
-            loading_img = pygame.image.load('data/graphics/loading_images/'+f'loading{i}.png').convert_alpha()
-            loading_img = pygame.transform.scale(loading_img, (1200, 640))
-            loading_imgs.append(loading_img)
 while True:
     for e in pygame.event.get():
         if e.type == attack:
@@ -197,16 +192,9 @@ while True:
                 level.draw_hearts()
             screen.blit(pygame.transform.scale(display, WINDOW_SIZE), (0, 0))
             if level.done:
-                state = LOADINGSCREEN
                 level = Level([], f'data/levels/level_{n}/', display, 'Simon')
                 n += 1
             pygame.display.update()  # update the screen
-        if state == LOADINGSCREEN:
-            for x in range(50):
-                for imgs in loading_imgs:
-                    logo(imgs, 0, 0)
-                    pygame.display.update()
-            state = RUNNING
         elif state == MERCHANT:
             #code for merchants, buttons and everything
             screen.fill('grey')
