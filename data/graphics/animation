@@ -8,7 +8,7 @@ player damage_jump 7;7
 player damage_fall 7;7
 mushroom idle 40;7;7
 imposter idle 1
-imposter attack 7;7;7;7;7;7;7;7
+imposter attack 1;1;1;1;1;1;1;1
 swordsman idle 1
 swordsman attack 7;7;7;7;7
 swordsman run 7;7;7;7;7;7;7

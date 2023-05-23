@@ -1,6 +1,6 @@
 def cal_score(score_points, coin_count, time_taken, enemy_kills = 0):
     score_points += (coin_count + enemy_kills * 2) * 50
-    score_points -= (time_taken)
+    score_points -= (time_taken) * 10
     return score_points
 
 
@@ -57,4 +57,3 @@ def score_keeping(path,score_points, info, name = ''): #info = [coin, time, enem
         n += 1
     f.close()
     return score_points
-

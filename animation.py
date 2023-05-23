@@ -48,5 +48,3 @@ def load_animations(path, type):
             n += 1
             animation_frame_data[animation_name] = anim_data
     return [animation_frame_data, animation_database]
-
-

@@ -32,9 +32,7 @@ class ground_tile(Tiles):
 
 
 class Level:
-
-
-    def __init__(self, game_map, path, surface, name, last_level = False):
+    def __init__(self, game_map, path, surface, name, last_level = False, info = [0, [10, 10], 0]):
         self.game_map = game_map
         self.surface = surface
         self.name = name
@@ -43,19 +41,20 @@ class Level:
         self.bg_drawn = False
         self.player_direction = 0
         self.merchant_beside = 0
-        self.mushroom_inv = 0
+        self.mushroom_inv = info[0]
         self.mushroom_taken = 0 #for special ending if possible
-        self.coin_inv = 0
+        self.coin_inv = info[2]
         # used to calcuate final score
         self.final_score = True
         self.last_level = last_level
+        self.imposter_kill = False
         self.damage = 10
         self.time_attacked = 0
         self.start_time_attack = time.time()
         self.dead = False
         self.done = False
-        self.health = 10
-        self.max_health = 10
+        self.health = info[1][0]
+        self.max_health = info[1][1]
         self.damage_taken = False
         self.tile_size = 16
         self.Simon_tile_size = 32
@@ -357,6 +356,7 @@ class Level:
             self.merchant_collision(player)
             self.death_collision(player)
             self.coin_collision(player)
+            self.attack(player)
             for end_tile in self.End.sprites():
                 if end_tile.rect.colliderect(player.rect):
                     self.end_level()
@@ -469,24 +469,16 @@ class Level:
                 self.health = 0
                 self.player.empty()
 
-    def attack(self):
+    def attack(self, player):
         if self.dead == False:
-            player = self.player.sprite
-            player.x = player.rect.x
-            player.x += player.movement[0]
-            player.rect.x = int(player.x)
             self.direction = ''
-            if self.time_attacked >= 3:
+            if self.time_attacked >= 2:
                 player.invincibility = False
             for imposter in self.imposter_group.sprites():
                 imposter.attack_animation = False
                 if imposter.rect.colliderect(player.rect):
                     imposter.attack_animation = True
-                    if player.invincibility == False:
-                        player.invincibility = True
-                        self.start_time_attack = time.time()
-                        self.health -= 4
-
+                    self.imposter_kill = True
             for swordsman in self.swordsman_group.sprites():
                 swordsman.attack_animation = False
                 if swordsman.rect.colliderect(player.rect):
@@ -497,15 +489,9 @@ class Level:
                         self.health -= 2
                     if player.rect.x > swordsman.rect.x:
                         swordsman.change_flip(True)
-                        for i in range(5):
-                            player.rect.x += 3
-                            player.rect.y -= 2
                         self.direction = 'left'
                     elif player.rect.x < swordsman.rect.x:
                         swordsman.change_flip(False)
-                        for i in range(5):
-                            player.rect.x -= 3
-                            player.rect.y -= 2
                         self.direction = 'right'
                 else:
                     if self.direction == 'left':
@@ -521,7 +507,7 @@ class Level:
             loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
             loading_img = pygame.transform.scale(loading_img, (1200, 640))
             loading_imgs.append(loading_img)
-        for x in range(60):
+        for x in range(240):
             for imgs in loading_imgs:
                 logo(imgs, 0, 0)
                 pygame.display.update()
@@ -600,12 +586,15 @@ class Level:
         # tiles
         self.time_elasped = (time.time() - self.start_time) * 50
         self.time_attacked = (time.time() - self.start_time_attack)
-        if self.time_attacked > 3:
-            self.time_attacked = 3
-        self.scrolling()
+        if self.time_attacked > 2:
+            self.time_attacked = 2
+        if self.imposter_kill == False:
+            self.imposter_attacking = 0
+            self.scrolling()
         # death
-        if self.dead:
+        if self.dead and self.imposter_kill == False:
             self.dying()
+
         # merchant check
         self.merchant_check()
         #background drawing
@@ -637,11 +626,27 @@ class Level:
         self.Spawn.update(self.scroll)
         self.merchant_group.update(self.scroll)
         self.merchant_group.draw(self.surface)
+
+        #imposter win
+        if self.imposter_kill and self.imposter_attacking >= 5:
+            self.surface.fill('black')
+            self.health -= 2
+            if self.health < 0:
+                self.health = 0
+            self.player.empty()
+
+        while self.imposter_kill and self.health >= 0:
+            self.dead = True
+            self.imposter_attacking += 1
+
+            if self.health <= 0:
+                self.imposter_kill = False
+                time.sleep(0.5)
+            time.sleep(0.5)
+            break
         # player
         player = self.player.sprite
 
         self.player.update(self.scroll)
         self.player.draw(self.surface)
         self.collision_movement()
-
-

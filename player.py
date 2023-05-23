@@ -35,7 +35,6 @@ class Player(pygame.sprite.Sprite):
         self.empty_heart = pygame.image.load('data/graphics/bg_images/empty_heart.png').convert_alpha()
         # debugging for slope collisions by pixel
         self.mask = pygame.mask.from_surface(self.image.convert_alpha())
-        self.DEBUG = False
 
         # player movement
         self.x = loc[0]
@@ -84,47 +83,24 @@ class Player(pygame.sprite.Sprite):
     def get_input(self):
         self.movement = [0, 0]
         self.keys = pygame.key.get_pressed()
-        if self.keys[pygame.K_d]:
-            self.DEBUG = True
-        if self.keys[pygame.K_f]:
-            self.DEBUG = False
-
-        if self.DEBUG:
-            if self.keys[pygame.K_RIGHT]:
-
+        if self.keys[pygame.K_RIGHT]:
+            self.movement[0] += 3
+            self.direction = [True, False]
+            self.flip = False
+            if -0.2 < self.vertical_momentum < 0.2 and self.keys[pygame.K_SPACE]:
                 self.movement[0] += 1
-                self.direction = [True, False]
-                self.flip = False
-
-            elif self.keys[pygame.K_LEFT]:
+        elif self.keys[pygame.K_LEFT]:
+            self.movement[0] -= 3
+            self.direction = [False, True]
+            self.flip = True
+            if -0.2 < self.vertical_momentum < 0.2 and self.keys[pygame.K_SPACE]:
                 self.movement[0] -= 1
-                self.direction = [False, True]
-                self.flip = True
-
-            if self.keys[pygame.K_UP]:
-                self.movement[1] = -1
-
-            if self.keys[pygame.K_DOWN]:
-                self.movement[1] = 1
         else:
-            if self.keys[pygame.K_RIGHT]:
-                self.movement[0] += 3
-                self.direction = [True, False]
-                self.flip = False
-                if -0.2 < self.vertical_momentum < 0.2 and self.keys[pygame.K_SPACE]:
-                    self.movement[0] += 1
-            elif self.keys[pygame.K_LEFT]:
-                self.movement[0] -= 3
-                self.direction = [False, True]
-                self.flip = True
-                if -0.2 < self.vertical_momentum < 0.2 and self.keys[pygame.K_SPACE]:
-                    self.movement[0] -= 1
-            else:
-                self.direction = [False, False]
-        if self.jump_held and self.jump_counter > 0:
-            if self.air_timer < 6:
-                self.jump_held = False
-                self.vertical_momentum = -4
+            self.direction = [False, False]
+    if self.jump_held and self.jump_counter > 0:
+        if self.air_timer < 6:
+            self.jump_held = False
+            self.vertical_momentum = -4
 
     def gravity(self):
         self.gravity_multiplier = 0.2
@@ -206,10 +182,8 @@ class Player(pygame.sprite.Sprite):
     def update(self, scroll):
         self.get_input()
         # gravity
-
-        if not self.DEBUG:
-            self.gravity()
-            self.movement[1] += self.vertical_momentum
+        self.gravity()
+        self.movement[1] += self.vertical_momentum
 
         self.rect.x -= scroll[0]
         self.rect.y -= scroll[1]
