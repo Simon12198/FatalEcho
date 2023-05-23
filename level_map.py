@@ -529,10 +529,11 @@ class Level:
 
     def end_level(self):
         loading_imgs = []
-        for i in range(1, 4):
-            loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
-            loading_img = pygame.transform.scale(loading_img, (1200, 640))
-            loading_imgs.append(loading_img)
+        if self.path != 'data/levels/level_3/':
+            for i in range(1, 4):
+                loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
+                loading_img = pygame.transform.scale(loading_img, (1200, 640))
+                loading_imgs.append(loading_img)
         for x in range(240):
             for imgs in loading_imgs:
                 logo(imgs, 0, 0)
@@ -542,8 +543,6 @@ class Level:
             self.final_score = True
         score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, 0])
         self.done = True
-        if self.last_level and self.done:
-            self.game_over = True
     def merchant_check(self):
         if self.merchant_beside != 0:
             return True
@@ -586,7 +585,7 @@ class Level:
             self.player_direction += 1
         elif self.keys[pygame.K_LEFT] and self.player_direction > 0:
             self.player_direction -= 1
-        for x in range(14):
+        for x in range(40):
             speed = 1
             for i in self.bg_imgs:
                 self.surface.blit(i, ((x * 600) - self.player_direction * speed, 0))

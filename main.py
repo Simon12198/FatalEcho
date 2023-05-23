@@ -70,7 +70,7 @@ logo_img = pygame.transform.scale(logo_img, (1200, 640))
 #to remember order of function:
 #(self, x, y, image, scale)
 
-tutorial_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 2/4 + 100, tutorial_img, 1)
+tutorial_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 2/4 + 140, tutorial_img, 1)
 resume_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 1/4, resume_img, 1.2)
 score_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 1/4 + 100, score_img, 1.2)
 play_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 1/4 + 70, play_img, 1.2)
@@ -132,9 +132,9 @@ screen_change = False
 main_music = 'unpaused'
 merchant_mode = 'main'
 merchant_collide = False
-level = Level([], 'data/levels/level_1/', display, 'Simon')
+level = Level([], 'data/levels/level_3/', display, 'Simon')
 RUNNING, PAUSE, TITLESCREEN, STARTSCREEN, ENDSCREEN, EASTEREGG, EEPAUSE, MERCHANT, MAINMENU = 0, 1, 2, 3, 4, 5, 6, 7, 8
-state = ENDSCREEN
+state = TITLESCREEN
 stop_drawing = False
 merchant_speak = False
 merchant_speak1 = False
@@ -191,13 +191,13 @@ while True:
                 level.run()
                 level.draw_hearts()
             screen.blit(pygame.transform.scale(display, WINDOW_SIZE), (0, 0))
-            if level.done and not level.last_level:
+            if level.done and not level.path == 'data/levels/level_3/':
                 level = Level([], f'data/levels/level_{n}/', display, 'Simon', info = [level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
                 n += 1
-            if level.game_over:
+            elif level.path == 'data/levels/level_3/' and level.done:
                 state = ENDSCREEN
             pygame.display.update()  # update the screen
-        elif state == MERCHANT:
+        if state == MERCHANT:
             #code for merchants, buttons and everything
             screen.fill('grey')
             if merchant_mode == "main":
@@ -303,8 +303,8 @@ while True:
             if menu_mode == "tutorial":
                 display.fill(BGCOLOUR)
                 # draw the different options buttons
-                screen_text("Arrows to move, Space to jump, ESCAPE to pause, E to Interact with the Merchant.", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 50)
-                screen_text("Beware of the trees.", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 100)
+                screen_text("Arrows to move, Space to jump, ESCAPE to pause, E to Interact with the Merchant.", 22, BLACK, SCREEN_WIDTH / 2, screen_height / 2 + 50)
+                screen_text("Beware of the trees.", 22, BLACK, SCREEN_WIDTH / 2, screen_height / 2 + 100)
                 if back_button.draw(screen) and clicked == False:
                     button_sound.play()
                     menu_mode = "main"
@@ -453,12 +453,6 @@ while True:
                     button_sound.play()
                     menu_mode = "options"
                     clicked = True
-                if quit_button.draw(screen) and clicked == False:
-                    button_sound.play()
-                    pygame.quit()
-                    sys.exit()
-                    clicked = True
-                    # check if the options menu is open
             if menu_mode == "options":
                 # draw the different options buttons
                 if audio_button.draw(screen) and clicked == False:
@@ -510,7 +504,7 @@ while True:
         elif state == ENDSCREEN:
             screen.fill(BGCOLOUR)
             screen_text("GAME OVER, CONGRATULATIONS", 48, WHITE, SCREEN_WIDTH / 2, screen_height / 4)
-            screen_text("Your final score is:" + level.final_score, 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4)
+            screen_text("Your final score is:" + str(level.final_score), 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4)
             screen_text("Press any key to go to the menu", 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4 + 50)
         pygame.display.flip()
 
