@@ -1,4 +1,6 @@
-import pygame, sys, score  # import pygame and sys
+import sys
+print(sys.path)
+import pygame, score  # import pygame and sys
 from score import score_keeping
 import button
 from level_map import Level
