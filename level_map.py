@@ -512,7 +512,7 @@ class Level:
                     if player.invincibility == False:
                         player.invincibility = True
                         self.start_time_attack = time.time()
-                        self.health -= 2
+                        self.health -= 3
                     if player.rect.x > swordsman.rect.x:
                         swordsman.change_flip(True)
                         self.direction = 'left'
@@ -575,7 +575,7 @@ class Level:
         if self.scroll[0] == 0 and self.scroll[1] == 0:
             player = Player((0, 0))
             self.player.add(player)
-            self.health = 10
+            self.health = self.max_health
             self.dead = False
     def draw_img(self, img, x, y):
         self.surface.blit(img, (x, y))
