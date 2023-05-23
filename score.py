@@ -1,18 +1,17 @@
 def cal_score(score_points, coin_count, time_taken, enemy_kills = 0):
     score_points += (coin_count + enemy_kills * 2) * 50
-    score_points -= (time_taken) * 10
+    score_points -= time_taken * 5
     return score_points
 
-
-
-def score_keeping(path,score_points, info, name = ''): #info = [coin, time, enemy_kills]
+def score_keeping(path,score_points, info = [0, 0, 0], name = ''): #info = [coin, time, enemy_kills]
     coin_count = info[0]
     time_taken = info[1]
     enemy_kills = info[2]
     repeat_name = False
     no_name = False
 
-    score_points = int(cal_score(score_points, coin_count, time_taken, enemy_kills))
+    if score_points == 0:
+        score_points = int(cal_score(score_points, coin_count, time_taken, enemy_kills))
 
     f = open(path + 'score', 'r')
     data = f.read()

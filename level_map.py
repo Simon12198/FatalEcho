@@ -2,6 +2,7 @@ import time, score
 import pygame.transform
 from player import *
 from csv_loader import *
+from os import walk
 import enemy
 
 
@@ -53,6 +54,7 @@ class Level:
         self.start_time_attack = time.time()
         self.dead = False
         self.done = False
+        self.game_over = False
         self.health = info[1][0]
         self.max_health = info[1][1]
         self.damage_taken = False
@@ -83,14 +85,13 @@ class Level:
         self.merchant_speak = False
         self.merchant_speak1 = False
         # use to calculate score
-        self.score = 10000
+        self.score = 0
         self.coin_count = 0
         self.start_time = time.time()
         self.player_on_slope = False
         self.bg_imgs = []
         self.loading_imgs = []
         self.done = False
-        self.game_over = False
         self.level_type = 'Simon'
         #background and loading images added to list
         for i in range(1, 6):
@@ -104,7 +105,6 @@ class Level:
         self.terrain_sprites = self.create_sprite(self.terrain_layout, 'Grass')
         self.barrier_layout = import_csv_files(self.game_map['Barrier'])
         self.barrier_sprites = self.create_sprite(self.barrier_layout, 'Barrier')
-
         self.Gold = import_csv_files(self.game_map['Gold'])
         self.create_sprite(self.Gold, 'Gold')
         self.Mushroom = import_csv_files(self.game_map['Mushroom'])
@@ -481,6 +481,7 @@ class Level:
             if coin.rect.colliderect(player.rect):
                 self.coin.remove(coin)
                 self.coin_inv += 1
+                self.coin_count += 1
 
     def merchant_collision(self, player):
         self.merchant_beside = 0
@@ -512,7 +513,7 @@ class Level:
                     if player.invincibility == False:
                         player.invincibility = True
                         self.start_time_attack = time.time()
-                        self.health -= 3
+                        self.health -= 2
                     if player.rect.x > swordsman.rect.x:
                         swordsman.change_flip(True)
                         self.direction = 'left'
@@ -529,20 +530,33 @@ class Level:
 
     def end_level(self):
         loading_imgs = []
-        if self.path != 'data/levels/level_3/':
-            for i in range(1, 4):
-                loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
-                loading_img = pygame.transform.scale(loading_img, (1200, 640))
-                loading_imgs.append(loading_img)
+        for i in range(1, 4):
+            loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
+            loading_img = pygame.transform.scale(loading_img, (1200, 640))
+            loading_imgs.append(loading_img)
         for x in range(240):
             for imgs in loading_imgs:
                 logo(imgs, 0, 0)
                 pygame.display.update()
+        score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, self.mushroom_taken])
+        n = 0
+        final_score = 0
         if self.last_level:
-            score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, 0], self.name)
-            self.final_score = True
-        score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, 0])
+            for _, action, ___ in walk('data/levels/'):
+                if n > 3:
+                    n = 3
+                f = open(f'data/levels/level_{n}/score', 'r')
+                data = f.read()
+                f.close()
+                final_score += int(data)
+                n += 1
+            f = open('data/levels/Final_Score', 'w')
+            f.write(str(final_score))
+            f.close()
         self.done = True
+        if self.last_level and self.done:
+            self.game_over = True
+
     def merchant_check(self):
         if self.merchant_beside != 0:
             return True
@@ -575,7 +589,7 @@ class Level:
         if self.scroll[0] == 0 and self.scroll[1] == 0:
             player = Player((0, 0))
             self.player.add(player)
-            self.health = self.max_health
+            self.health = 10
             self.dead = False
     def draw_img(self, img, x, y):
         self.surface.blit(img, (x, y))
@@ -611,7 +625,7 @@ class Level:
         player.jump_held = False
     def run(self):
         # tiles
-        self.time_elasped = (time.time() - self.start_time) * 50
+        self.time_elasped = time.time() - self.start_time
         self.time_attacked = (time.time() - self.start_time_attack)
         if self.time_attacked > 2:
             self.time_attacked = 2
@@ -625,6 +639,9 @@ class Level:
         # merchant check
         self.merchant_check()
         #background drawing
+        self.tree.update(self.scroll)
+        self.tree.draw(self.surface)
+        self.blob_group.update(self.scroll)
         self.tiles.update(self.scroll)
         self.tiles.draw(self.surface)
         self.slopesgroup.update(self.scroll)
@@ -640,11 +657,8 @@ class Level:
         self.bg_objects.update(self.scroll)
         self.bg_objects.draw(self.surface)
         self.heart_objects.draw(self.surface)
-        self.coin.update(self.scroll)
         self.coin.draw(self.surface)
-        self.tree.update(self.scroll)
-        self.tree.draw(self.surface)
-        self.blob_group.update(self.scroll)
+        self.coin.update(self.scroll)
         self.blob_group.draw(self.surface)
         self.swordsman_group.update(self.scroll)
         self.swordsman_group.draw(self.surface)

@@ -1,13 +1,14 @@
-import pygame, sys, time  # import pygame and sys
+import pygame, sys, score  # import pygame and sys
+from score import score_keeping
 import button
 from level_map import Level
 from pygame.locals import *
-import math
 
 pygame.init()  # initiate pygame
 pygame.mixer.init()
 clock = pygame.time.Clock()  # set up the clock
 pygame.display.set_caption('Fatal Echo')  # set the window name
+pygame.display.set_icon(pygame.image.load('data/graphics/EricTerrain/Grass/grass.png'))
 SCREEN_WIDTH = 1200
 screen_height = 640
 
@@ -70,7 +71,7 @@ logo_img = pygame.transform.scale(logo_img, (1200, 640))
 #to remember order of function:
 #(self, x, y, image, scale)
 
-tutorial_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 2/4 + 140, tutorial_img, 1)
+tutorial_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 2/4 + 125, tutorial_img, 1)
 resume_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 1/4, resume_img, 1.2)
 score_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 1/4 + 100, score_img, 1.2)
 play_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 1/4 + 70, play_img, 1.2)
@@ -81,7 +82,7 @@ weapons_button = button.Button(SCREEN_WIDTH /2 + 150, screen_height/2 + 140, buy
 sell_button = button.Button(SCREEN_WIDTH*1/2 - 40,screen_height * 2/4, sell_img, 1.2)
 sellmushrooms_button = button.Button(SCREEN_WIDTH*1/2 - 130,screen_height * 2/4 + 130, sell_img, 1.2)
 quit_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 7/8 - 20, quit_img, 1.2)
-audio_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 1/4 - 50, audio_img, 1.2)
+audio_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 2/4 + 50, audio_img, 1.2)
 keys_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 3/4 - 100, keys_img, 1.2)
 merchant_back_button = button.Button(SCREEN_WIDTH*1/2 + 40,screen_height * 7/8 - 80, back_img, 1.2)
 merchant_back1_button = button.Button(SCREEN_WIDTH*1/2 - 40,screen_height * 7/8 - 20, back_img, 1.2)
@@ -108,14 +109,15 @@ def logo(img, x, y):
     screen.blit(img, (x,y))
 
 menu_mode = "main"
+score_finished = False
 clicked = False
-time = 3500
+timer = 3500
 cooldown = 750
 screenswitch = pygame.USEREVENT + 0
 finished_switch = pygame.USEREVENT + 1
 attack = pygame.USEREVENT + 2
-pygame.time.set_timer(finished_switch, time)
-pygame.time.set_timer(screenswitch, time)
+pygame.time.set_timer(finished_switch, timer)
+pygame.time.set_timer(screenswitch, timer)
 # Audio
 pygame.mixer.init()
 
@@ -132,7 +134,7 @@ screen_change = False
 main_music = 'unpaused'
 merchant_mode = 'main'
 merchant_collide = False
-level = Level([], 'data/levels/level_3/', display, 'Simon')
+level = Level([], 'data/levels/level_1/', display, 'Simon')
 RUNNING, PAUSE, TITLESCREEN, STARTSCREEN, ENDSCREEN, EASTEREGG, EEPAUSE, MERCHANT, MAINMENU = 0, 1, 2, 3, 4, 5, 6, 7, 8
 state = TITLESCREEN
 stop_drawing = False
@@ -140,7 +142,11 @@ merchant_speak = False
 merchant_speak1 = False
 merchant_sound = pygame.mixer.Sound("data/music/merchant_talking.wav")
 merchant_sound.set_volume(0.2)
+current_level = 0
+name_entered = False
+user_text = ''
 n = 1
+
 while True:
     for e in pygame.event.get():
         if e.type == screenswitch:
@@ -151,6 +157,15 @@ while True:
             pygame.quit()
             sys.exit()
         if e.type == pygame.KEYDOWN:
+            if state == ENDSCREEN and name_entered == False:
+                if e.key == pygame.K_BACKSPACE:
+                    user_text = user_text[:-1]
+                elif e.key == pygame.K_RETURN:
+                    name_entered = True
+                elif e.key == pygame.K_SPACE:
+                    pass
+                elif len(user_text) < 15:
+                    user_text += e.unicode
             if e.key == pygame.K_e and state == RUNNING:
                 level.merchant_check()
                 if level.merchant_check() == True:
@@ -171,9 +186,10 @@ while True:
             if state == STARTSCREEN:
                 if pygame.key.get_pressed():
                     state = RUNNING
-            if state == ENDSCREEN:
+            if state == ENDSCREEN and name_entered:
                 if pygame.key.get_pressed():
-                    state = MAINMENU
+                    if e.key != pygame.K_RETURN:
+                        state = MAINMENU
         if e.type == pygame.MOUSEBUTTONUP:
             clicked = False
 
@@ -191,13 +207,21 @@ while True:
                 level.run()
                 level.draw_hearts()
             screen.blit(pygame.transform.scale(display, WINDOW_SIZE), (0, 0))
-            if level.done and not level.path == 'data/levels/level_3/':
-                level = Level([], f'data/levels/level_{n}/', display, 'Simon', info = [level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
+            if level.done:
+                if n == 3:
+                    level = Level([], f'data/levels/level_{n}/', display, 'Simon', True, [level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
+                elif n > 3:
+                    state = ENDSCREEN
+                    n = 1
+                    current_level = 0
+                else:
+                    level = Level([], f'data/levels/level_{n}/', display, 'Simon', info = [level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
+                current_level = n
                 n += 1
-            elif level.path == 'data/levels/level_3/' and level.done:
+            if level.game_over:
                 state = ENDSCREEN
             pygame.display.update()  # update the screen
-        if state == MERCHANT:
+        elif state == MERCHANT:
             #code for merchants, buttons and everything
             screen.fill('grey')
             if merchant_mode == "main":
@@ -275,6 +299,7 @@ while True:
             screen.blit(pygame.transform.scale(display, WINDOW_SIZE), (0, 0))
             pygame.display.update()  # update the screen
         elif state == MAINMENU:
+            user_text = ''
             logo(menu_img, 0, 0)
             if main_music == 'unpaused':
                 menu_music.play(-1)
@@ -284,6 +309,7 @@ while True:
                 # draw pause screen buttons
                 if play_button.draw(screen) and clicked == False:
                     button_sound.play()
+                    level = Level([], f'data/levels/level_{current_level}/', display, 'Simon',info=[level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
                     state = RUNNING
                     clicked = True
                 if options_button.draw(screen) and clicked == False:
@@ -303,8 +329,8 @@ while True:
             if menu_mode == "tutorial":
                 display.fill(BGCOLOUR)
                 # draw the different options buttons
-                screen_text("Arrows to move, Space to jump, ESCAPE to pause, E to Interact with the Merchant.", 22, BLACK, SCREEN_WIDTH / 2, screen_height / 2 + 50)
-                screen_text("Beware of the trees.", 22, BLACK, SCREEN_WIDTH / 2, screen_height / 2 + 100)
+                screen_text("Arrows to move, Space to jump, ESCAPE to pause, E to Interact with the Merchant.", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 50)
+                screen_text("Beware of the trees.", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 100)
                 if back_button.draw(screen) and clicked == False:
                     button_sound.play()
                     menu_mode = "main"
@@ -317,7 +343,9 @@ while True:
                     menu_mode = 'audio settings'
                     clicked = True
                 if score_button.draw(screen) and clicked == False:
-                    print('scores and topscore')
+                    score_finished = False
+                    button_sound.play()
+                    menu_mode = 'score_board'
                     clicked = True
                 if back_button.draw(screen) and clicked == False:
                     button_sound.play()
@@ -335,7 +363,6 @@ while True:
                 music_pos = [SCREEN_WIDTH * 1 / 2 + 100, screen_height * 1 / 5 + 100]
                 screen.blit(sfx_surf, sfx_pos)
                 screen.blit(music_surf, music_pos)
-
                 if sound_up_music_button.draw(screen) and clicked == False and init_music_vol * 100 < 96:
                     button_sound.play()
                     init_music_vol += 0.0500
@@ -362,6 +389,25 @@ while True:
                     button_sound.play()
                     menu_mode = "options"
                     clicked = True
+            elif menu_mode == "score_board":
+                screen.fill((0,0,0))
+                f = open('data/levels/score', 'r')
+                data = f.read()
+                f.close()
+                screen_text("LEADERBOARD", 68, WHITE, SCREEN_WIDTH / 2, 100)
+                back2_button = button.Button(SCREEN_WIDTH / 2 - 100, screen_height - 100, back_img, 1.2)
+                n = 0
+                for line in data.split('\n'):
+                    if n > 10:
+                        score_finished = True
+                    if score_finished == True:
+                        break
+                    screen_text(line, 30, WHITE, SCREEN_WIDTH / 2, 175 + (30 * n))
+                    n += 1
+                if back2_button.draw(screen) and clicked == False:
+                    button_sound.play()
+                    menu_mode = 'options'
+
         elif state == PAUSE:
             screen.fill(PURPLEBG)
             if main_music == 'unpaused':
@@ -453,6 +499,12 @@ while True:
                     button_sound.play()
                     menu_mode = "options"
                     clicked = True
+                if quit_button.draw(screen) and clicked == False:
+                    button_sound.play()
+                    pygame.quit()
+                    sys.exit()
+                    clicked = True
+                    # check if the options menu is open
             if menu_mode == "options":
                 # draw the different options buttons
                 if audio_button.draw(screen) and clicked == False:
@@ -503,9 +555,22 @@ while True:
             screen_text("Press any key to play", 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4 + 20)
         elif state == ENDSCREEN:
             screen.fill(BGCOLOUR)
+
             screen_text("GAME OVER, CONGRATULATIONS", 48, WHITE, SCREEN_WIDTH / 2, screen_height / 4)
-            screen_text("Your final score is:" + str(level.final_score), 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4)
-            screen_text("Press any key to go to the menu", 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4 + 50)
+            user_input = 'Enter Your Name: '
+            screen_text(user_input + user_text, 48, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4)
+            if name_entered:
+                f = open('data/levels/Final_Score')
+                if main_music == 'unpaused':
+                    menu_music.play(-1)
+                    pygame.mixer_music.pause()
+                    main_music = 'paused'
+                data = f.read()
+                f.close()
+                screen_text('Congrats ' + user_text +'. Your final score is: ' + data, 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4 + 50)
+                screen_text("Press any key to go to the menu", 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4 + 100)
+                score_keeping('data/levels/', data, name = user_text)
+                n = 0
         pygame.display.flip()
 
         clock.tick(60)
