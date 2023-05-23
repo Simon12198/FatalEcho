@@ -97,10 +97,10 @@ class Player(pygame.sprite.Sprite):
                 self.movement[0] -= 1
         else:
             self.direction = [False, False]
-    if self.jump_held and self.jump_counter > 0:
-        if self.air_timer < 6:
-            self.jump_held = False
-            self.vertical_momentum = -4
+            if self.jump_held and self.jump_counter > 0:
+                if self.air_timer < 6:
+                    self.jump_held = False
+                    self.vertical_momentum = -4
 
     def gravity(self):
         self.gravity_multiplier = 0.2

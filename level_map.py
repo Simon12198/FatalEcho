@@ -89,6 +89,7 @@ class Level:
         self.bg_imgs = []
         self.loading_imgs = []
         self.done = False
+        self.game_over = False
         self.level_type = 'Simon'
         #background and loading images added to list
         for i in range(1, 6):
@@ -516,6 +517,8 @@ class Level:
             self.final_score = True
         score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, 0])
         self.done = True
+        if self.last_level and self.done:
+            self.game_over = True
     def merchant_check(self):
         if self.merchant_beside != 0:
             return True
