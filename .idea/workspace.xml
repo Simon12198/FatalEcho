@@ -5,11 +5,58 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="33c247da-1e0d-4f0d-aa22-2ea3cb81e57e" name="Changes" comment="copy">
+      <change afterPath="$PROJECT_DIR$/data/graphics/images/16barrier.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/graphics/images/barrier.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/levels/level_0/level_0_Barrier.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Barrier.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Barrier.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/levels/level_3/Barrier.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Barrier.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/score" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_0/level" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_0/level" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_0/level_0_Grass.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_0/level_0_Grass.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level1.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level1.tmx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Death.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Death.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Gold.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Gold.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Grass.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Grass.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Imposter.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Imposter.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Merchant.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Merchant.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Mushroom.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Mushroom.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Slopes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Slopes.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Spawn.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Spawn.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Swordsman.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Swordsman.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_TopSlopes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_TopSlopes.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Trees.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Trees.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/level" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/level" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level2.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level2.tmx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Death.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Death.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Gold.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Gold.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Grass.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Grass.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Imposter.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Imposter.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Merchant.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Merchant.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Mushroom.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Mushroom.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Slopes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Slopes.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Spawn.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Spawn.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Swordsman.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Swordsman.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_TopSlopes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_TopSlopes.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Trees.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Trees.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/level" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/level" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3.tmx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Blobs.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Blobs.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Death.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Death.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Gold.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Gold.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Grass.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Grass.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Imposter.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Imposter.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Merchant.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Merchant.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Mushroom.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Mushroom.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Slopes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Slopes.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Spawn.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Spawn.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Swordsman.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Swordsman.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_TopSlopes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_TopSlopes.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Trees.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Trees.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/level_map.py" beforeDir="false" afterPath="$PROJECT_DIR$/level_map.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +211,21 @@
       <option name="project" value="LOCAL" />
       <updated>1684803417256</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="copy">
+      <created>1684804009215</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1684804009215</updated>
+    </task>
+    <task id="LOCAL-00017" summary="copy">
+      <created>1684804174468</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1684804174468</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

@@ -65,6 +65,7 @@ class Level:
 
         self.player = pygame.sprite.GroupSingle()
         self.tiles = pygame.sprite.Group()
+        self.barriers = pygame.sprite.Group()
         self.bg_objects = pygame.sprite.Group()
         self.imposter_group = pygame.sprite.Group()
         self.heart_objects = pygame.sprite.Group()
@@ -101,6 +102,8 @@ class Level:
         #creating and importing the game map files and sprites
         self.terrain_layout = import_csv_files(self.game_map['Grass'])
         self.terrain_sprites = self.create_sprite(self.terrain_layout, 'Grass')
+        self.barrier_layout = import_csv_files(self.game_map['Barrier'])
+        self.barrier_sprites = self.create_sprite(self.barrier_layout, 'Barrier')
 
         self.Gold = import_csv_files(self.game_map['Gold'])
         self.create_sprite(self.Gold, 'Gold')
@@ -182,6 +185,11 @@ class Level:
                             tile = terrain_layout[int(col)]
                             sprite = ground_tile(self.tile_size, [col_index * 16, row_index * 16], tile)
                             self.tiles.add(sprite)
+                        if type == 'Barrier':
+                            terrain_layout = slicing_tiles('data/graphics/images/16barrier.png')
+                            tile = terrain_layout[int(col)]
+                            sprite = ground_tile(self.tile_size, [col_index * 16, row_index * 16], tile)
+                            self.barriers.add(sprite)
                         if type == 'Slopes':
                             slope_layout = slicing_tiles('data/graphics/EricTerrain/Grass/Slope.png')
                             slope = slope_layout[int(col)]
@@ -235,6 +243,11 @@ class Level:
                             tile = terrain_layout[int(col)]
                             sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tile)
                             self.tiles.add(sprite)
+                        if type == 'Barrier':
+                            terrain_layout = slicing_tiles('data/graphics/images/barrier.png', (32,32))
+                            tile = terrain_layout[int(col)]
+                            sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tile)
+                            self.barriers.add(sprite)
                         if type == 'Gold':
                             gold = slicing_tiles('data/graphics/SimonTerrain/Coin/gold_coin.png', (32,32))
                             tiles = gold[int(col)]
@@ -306,6 +319,7 @@ class Level:
                     col_index += 1
                 row_index += 1
             self.tile_sprites = self.tiles.sprites()
+            self.barrier_sprites = self.barriers.sprites()
             self.slope_sprite = self.slopesgroup.sprites()
             self.headslope_sprites = self.headslopesgroup.sprites()
 
@@ -382,6 +396,17 @@ class Level:
                 if player.movement[1] < 0:
                     player.rect.top = tile.rect.bottom
                     self.collision_types['top'] = True
+        for barrier in self.barriers.sprites():
+            if barrier.rect.colliderect(player.rect):
+                if player.movement[1] < 0:
+                    player.rect.top = barrier.rect.bottom
+                    self.collision_types['top'] = True
+                if player.movement[0] > 0:
+                    player.rect.right = barrier.rect.left
+                    self.collision_types['right'] = True
+                if player.movement[0] < 0:
+                    player.rect.left = barrier.rect.right
+                    self.collision_types['left'] = True
 
     def mushroom_collision(self, player):
         for mushroom in self.mushroom_group.sprites():
@@ -626,6 +651,7 @@ class Level:
         self.swordsman_group.draw(self.surface)
         self.End.update(self.scroll)
         self.Death.update(self.scroll)
+        self.barriers.update(self.scroll)
         self.Spawn.update(self.scroll)
         self.merchant_group.update(self.scroll)
         self.merchant_group.draw(self.surface)
