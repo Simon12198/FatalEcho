@@ -70,7 +70,7 @@ logo_img = pygame.transform.scale(logo_img, (1200, 640))
 #to remember order of function:
 #(self, x, y, image, scale)
 
-tutorial_button = button.Button(SCREEN_WIDTH*1/2 - 400,screen_height * 1/4 - 100, tutorial_img, 1)
+tutorial_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 2/4 + 100, tutorial_img, 1)
 resume_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 1/4, resume_img, 1.2)
 score_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 1/4 + 100, score_img, 1.2)
 play_button = button.Button(SCREEN_WIDTH*1/2 - 100,screen_height * 1/4 + 70, play_img, 1.2)
@@ -132,7 +132,7 @@ screen_change = False
 main_music = 'unpaused'
 merchant_mode = 'main'
 merchant_collide = False
-level = Level([], 'data/levels/level_3/', display, 'Simon')
+level = Level([], 'data/levels/level_0/', display, 'Simon')
 RUNNING, PAUSE, TITLESCREEN, STARTSCREEN, ENDSCREEN, EASTEREGG, EEPAUSE, MERCHANT, MAINMENU = 0, 1, 2, 3, 4, 5, 6, 7, 8
 state = ENDSCREEN
 stop_drawing = False
