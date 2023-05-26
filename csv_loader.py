@@ -4,6 +4,7 @@ import pygame
 global tile_size
 
 def import_csv_files(path):
+    #imports the files to be loaded
     game_map = []
     with open(path) as map:
         level = reader(map, delimiter= ',')
@@ -12,6 +13,7 @@ def import_csv_files(path):
         return game_map
 
 def slicing_tiles(path, tile_size = (16, 16)):
+    #cuts the tiles into each specific size
     image = pygame.image.load(path).convert_alpha()
     tile_x = int(image.get_size()[0] / tile_size[0])
     tile_y = int(image.get_size()[1] / tile_size[1])

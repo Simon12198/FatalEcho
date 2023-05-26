@@ -24,6 +24,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\data\levels\level_1\Level_1_Platform.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\data\levels\level_2\Level_2_Imposter.csv">
           <value>
             <Attribute>
@@ -67,6 +74,13 @@
           </value>
         </entry>
         <entry key="\data\levels\level_3\Level_3_Merchant.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data\levels\level_3\Level_3_Platform.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
