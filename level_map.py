@@ -226,7 +226,7 @@ class Level:
 								sprite = ground_tile(self.tile_size, (col_index * 16, (row_index - 3) * 16.1), tree_1_set)
 							self.tree.add(sprite)
 						if type == 'Spawn':
-							life = slicing_tiles('data/graphics/EricTerrain/Spawn/Spawn.png')
+							life = slicing_tiles('data/graphics/EricTerrain/Spawn/spawnportal.png', (16,32))
 							born_set = life[int(col)]
 							if col == '0':
 								sprite = ground_tile(self.tile_size, [col_index * 16, row_index * 16], born_set)
@@ -237,7 +237,7 @@ class Level:
 								self.player.add(player)
 								self.dead = False
 							if col == '1':
-								sprite = ground_tile(self.tile_size, [col_index * 16, row_index * 16], born_set)
+								sprite = ground_tile(self.tile_size, [col_index * 16, row_index * 16 - 16], born_set)
 								self.End.add(sprite)
 					col_index += 1
 				row_index += 1
@@ -325,7 +325,7 @@ class Level:
 							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], topramp)
 							self.headslopesgroup.add(sprite)
 						if type == 'Spawn':
-							life = slicing_tiles('data/graphics/SimonTerrain/Spawn/Spawn.png', (32,32))
+							life = slicing_tiles('data/graphics/SimonTerrain/Spawn/spawnportal.png', (32,64))
 							born_set = life[int(col)]
 							if col == '0':
 								sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], born_set)
@@ -336,7 +336,7 @@ class Level:
 								self.player.add(player)
 								self.dead = False
 							if col == '1':
-								sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], born_set)
+								sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32 - 32], born_set)
 								self.End.add(sprite)
 					col_index += 1
 				row_index += 1
@@ -731,9 +731,11 @@ class Level:
 		self.swordsman_group.update(self.scroll)
 		self.swordsman_group.draw(self.surface)
 		self.End.update(self.scroll)
+		self.End.draw(self.surface)
 		self.Death.update(self.scroll)
 		self.barriers.update(self.scroll)
 		self.Spawn.update(self.scroll)
+		self.Spawn.draw(self.surface)
 		self.merchant_group.update(self.scroll)
 		self.merchant_group.draw(self.surface)
 
