@@ -526,12 +526,10 @@ class Level:
 			#platforms moving in x
 			if platform.rect.colliderect(player.rect.x + player.movement[0], player.rect.y, player.rect.width, player.rect.height):
 				player.rect.bottom = platform.rect.top
-				player.air_timer = 0
-				player.vertical_momentum = 0
 				if player.movement[0] > 0: #player right of platform
-					player.rect.x -= 1.5
+					player.rect.x -= 1
 				if player.movement[0] < 0: #player is left of the platform
-					player.rect.x += 1.5
+					player.rect.x += 1
 				if platform.move_x != 0:
 					if platform.move_direction < 0:
 						player.rect.x -= 3
