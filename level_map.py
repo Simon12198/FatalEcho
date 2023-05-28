@@ -735,27 +735,30 @@ class Level:
 						swordsman.change_flip(True)
 						self.direction = ''
 			for wizard in self.wizard_group.sprites():
-				self.shoot_cooldown = 0
-				if self.shoot_cooldown > 0:
-					self.shoot_cooldown -= 1
 				wizard.attack_animation = False
 				if abs(player.rect.x - wizard.rect.x) < 200 and player.rect.y - 8 == wizard.rect.y :
 					wizard.attack_animation = True
 					if player.rect.x > wizard.rect.x:
 						wizard.change_flip(True)
 						if self.shoot_cooldown == 0 and self.ammo > 0:
-							self.shoot_cooldown = 10
+							self.shoot_cooldown = 60
 							orbs = enemy.Orb(wizard.rect.centerx + 10, wizard.rect.centery - 16, 1)
 							self.orb_group.add(orbs)
 							self.ammo -= 1
+						if self.shoot_cooldown > 0:
+							self.shoot_cooldown -= 1
+							self.ammo += 1
 						self.direction = 'left'
 					elif player.rect.x < wizard.rect.x:
+						wizard.change_flip(False)
 						if self.shoot_cooldown == 0 and self.ammo > 0:
-							self.shoot_cooldown = 10
+							self.shoot_cooldown = 60
 							orbleft = enemy.Orb(wizard.rect.centerx - 20, wizard.rect.centery - 16, -1)
 							self.orb_group.add(orbleft)
 							self.ammo -= 1
-						wizard.change_flip(False)
+						if self.shoot_cooldown > 0:
+							self.shoot_cooldown -= 1
+							self.ammo += 1
 						self.direction = 'right'
 					else:
 						if self.direction == 'left':

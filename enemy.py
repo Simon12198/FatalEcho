@@ -56,7 +56,7 @@ class Orb(pygame.sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 		self.flip = False
-		self.speed = 20
+		self.speed = 5
 		self.direction = direction
 		self.mask = pygame.mask.from_surface(self.image.convert_alpha())
 
