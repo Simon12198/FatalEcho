@@ -199,6 +199,7 @@ class Swordsman(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
 		self.import_animation()
+		self.health = 100
 		self.action = ''
 		self.change_action('attack')
 		#swordsman attacking animation
@@ -284,6 +285,7 @@ class Wizard(pygame.sprite.Sprite):
 		#swordsman attacking animation
 		self.attack_animation = False
 		self.current_frame = 0
+		self.health = 1000
 		# swordsman running animation
 		self.image = self.animations[self.action][self.anim[self.current_frame]]
 		self.rect = self.image.get_rect()
@@ -352,5 +354,8 @@ class Wizard(pygame.sprite.Sprite):
 			self.move()
 		self.rect.x -= scroll[0]
 		self.rect.y -= scroll[1]
+		self.status()
+		self.implement_anim(True)
+
 		self.status()
 		self.implement_anim(True)

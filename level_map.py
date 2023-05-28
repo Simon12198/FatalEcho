@@ -43,7 +43,7 @@ class Level:
 		self.player_direction = 0
 		self.merchant_beside = 0
 		self.mushroom_inv = info[0]
-		self.mushroom_taken = 0 #for special ending if possible
+		self.mushroom_taken = 0
 		self.coin_inv = info[2]
 		# used to calcuate final score
 		self.final_score = True
@@ -791,6 +791,8 @@ class Level:
 							player.invincibility = True
 							self.start_time_attack = time.time()
 							self.health -= 2
+						if player.player_attack:
+							swordsman.health -= 10
 						if player.rect.x > swordsman.rect.x:
 							swordsman.change_flip(True)
 							self.direction = 'left'
@@ -804,6 +806,8 @@ class Level:
 					elif self.direction == 'right':
 						swordsman.change_flip(True)
 						self.direction = ''
+				if swordsman.health == 0:
+					self.swordsman_group.remove(swordsman)
 			for wizard in self.wizard_group.sprites():
 				wizard.attack_animation = False
 				if abs(player.rect.x - wizard.rect.x) < 200 and player.rect.y - 8 == wizard.rect.y :
@@ -826,6 +830,8 @@ class Level:
 							orbleft = enemy.Orb(wizard.rect.centerx - 20, wizard.rect.centery - 16, -1)
 							self.orb_group.add(orbleft)
 							self.ammo -= 1
+						if player.player_attack:
+							wizard.health -= 10
 						if self.shoot_cooldown > 0:
 							self.shoot_cooldown -= 1
 							self.ammo += 1
@@ -837,6 +843,8 @@ class Level:
 						elif self.direction == 'right':
 							wizard.change_flip(True)
 							self.direction = ''
+					if wizard.health == 0:
+						self.wizard_group.remove(wizard)
 					# check collision with characters
 					for orb in self.orb_group.sprites():
 						if pygame.Rect.colliderect(orb.rect, player.rect):
@@ -910,6 +918,10 @@ class Level:
 			return True
 		else:
 			return False
+	def player_swing(self):
+		player = self.player.sprite
+		if self.player_attack:
+			player.player_attack = True
 	def player_jump(self):
 		player = self.player.sprite
 		if player.air_timer < 6:

@@ -5,51 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="33c247da-1e0d-4f0d-aa22-2ea3cb81e57e" name="Changes" comment="copy">
-      <change afterPath="$PROJECT_DIR$/data/levels/level_0/level_0_BadEnding.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_0/level_0_GoodEnding.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_1/level_1_BadEnding.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_1/level_1_GoodEnding.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_2/level_2_BadEnding.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_2/level_2_GoodEnding.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_3/level_3_BadEnding.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_3/level_3_GoodEnding.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_4/level_4_BadEnding.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_4/level_4_GoodEnding.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_6/level" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_6/score" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Barrier.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Blobs.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Death.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Gold.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Grass.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Imposter.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Merchant.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Mushroom.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Npc.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Platform.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Slopes.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Spawn.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Swordsman.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_TopSlopes.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Trees.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/level_7_Wizard.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/levels/level_7/score" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tiles.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_0/level" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_0/level" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_1/level" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/level" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_2/level" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/level" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Trees.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Trees.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_4/Level" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_4/Level" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_5/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_5/score" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/graphics/animation" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/animation" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/enemy.py" beforeDir="false" afterPath="$PROJECT_DIR$/enemy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/level_map.py" beforeDir="false" afterPath="$PROJECT_DIR$/level_map.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="PUSH_TAGS">
@@ -69,23 +43,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/simon/PycharmProjects/MergingCopyFatalEcho/data/levels/level_4",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/simon/Downloads/FatalEchoNew-master (1) 2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\graphics\orb\idle" />
-      <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\graphics\FlashbackTerrain\Slopes" />
-      <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\graphics\SimonTerrain\Platform" />
-      <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\graphics\imposter\idle" />
-      <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\graphics\imposter\attack" />
+      <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\levels\level_4" />
+      <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\levels\level_3" />
+      <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\levels\level_2" />
+      <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\levels\level_1" />
+      <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\levels\level_0" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\graphics\orb\moving" />
@@ -328,7 +302,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685290308385</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="copy">
+      <created>1685308935302</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1685308935302</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

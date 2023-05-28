@@ -1,4 +1,4 @@
-import pygame, os, math
+import pygame, os, time
 
 from animation import load_animations
 
@@ -21,6 +21,7 @@ class Player(pygame.sprite.Sprite):
         # player animation
         self.import_animation()
         self.frame = 0
+        self.player_attack = False
         self.action = ''
         self.change_action('idle')
         self.flip = False
@@ -30,20 +31,22 @@ class Player(pygame.sprite.Sprite):
         self.image = self.animations[self.action][self.anim[self.frame]]
         self.rect = self.image.get_rect(topleft=loc)
         #heart images
-        self.full_heart = pygame.image.load('data/graphics/bg_images/heart.png').convert_alpha()
-        self.half_heart = pygame.image.load('data/graphics/bg_images/half_heart.png').convert_alpha()
-        self.empty_heart = pygame.image.load('data/graphics/bg_images/empty_heart.png').convert_alpha()
+        self.full_heart = pygame.image.load('../MergingCopyFatalEcho/data/graphics/bg_images/heart.png').convert_alpha()
+        self.half_heart = pygame.image.load('../MergingCopyFatalEcho/data/graphics/bg_images/half_heart.png').convert_alpha()
+        self.empty_heart = pygame.image.load('../MergingCopyFatalEcho/data/graphics/bg_images/empty_heart.png').convert_alpha()
         # debugging for slope collisions by pixel
         self.mask = pygame.mask.from_surface(self.image.convert_alpha())
+        self.DEBUG = False
 
         # player movement
         self.x = loc[0]
         self.y = loc[1]
         self.invincibility = False
-        self.jump_counter = 0
+        self.jump_counter = 1
         self.movement = [0, 0]
         self.air_timer = 0
         self.velocity = 0
+        self.jump_buffer = False
         self.vertical_momentum = 0
         self.direction = [False, False]
         self.jump_held = False
@@ -83,24 +86,43 @@ class Player(pygame.sprite.Sprite):
     def get_input(self):
         self.movement = [0, 0]
         self.keys = pygame.key.get_pressed()
-        if self.keys[pygame.K_RIGHT]:
-            self.movement[0] += 3
-            self.direction = [True, False]
-            self.flip = False
-            if -0.2 < self.vertical_momentum < 0.2 and self.keys[pygame.K_SPACE]:
+        self.DEBUG = False
+        if self.DEBUG:
+            if self.keys[pygame.K_RIGHT]:
+
                 self.movement[0] += 1
-        elif self.keys[pygame.K_LEFT]:
-            self.movement[0] -= 3
-            self.direction = [False, True]
-            self.flip = True
-            if -0.2 < self.vertical_momentum < 0.2 and self.keys[pygame.K_SPACE]:
+                self.direction = [True, False]
+                self.flip = False
+
+            elif self.keys[pygame.K_LEFT]:
                 self.movement[0] -= 1
+                self.direction = [False, True]
+                self.flip = True
+
+            if self.keys[pygame.K_UP]:
+                self.movement[1] = -1
+
+            if self.keys[pygame.K_DOWN]:
+                self.movement[1] = 1
         else:
-            self.direction = [False, False]
-            if self.jump_held and self.jump_counter > 0:
-                if self.air_timer < 6:
-                    self.jump_held = False
-                    self.vertical_momentum = -4
+            if self.keys[pygame.K_RIGHT]:
+                self.movement[0] += 3
+                self.direction = [True, False]
+                self.flip = False
+                if -0.2 < self.vertical_momentum < 0.2 and self.keys[pygame.K_SPACE]:
+                    self.movement[0] += 1
+            elif self.keys[pygame.K_LEFT]:
+                self.movement[0] -= 3
+                self.direction = [False, True]
+                self.flip = True
+                if -0.2 < self.vertical_momentum < 0.2 and self.keys[pygame.K_SPACE]:
+                    self.movement[0] -= 1
+            else:
+                self.direction = [False, False]
+        if self.jump_held and self.jump_counter > 0:
+            if self.air_timer < 6:
+                self.jump_held = False
+                self.vertical_momentum = -4
 
     def gravity(self):
         self.gravity_multiplier = 0.2
@@ -114,8 +136,8 @@ class Player(pygame.sprite.Sprite):
             self.vertical_momentum = 3
 
     def import_animation(self):
-        path = 'data/graphics/'
-        self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': [], 'damage_idle': [], 'damage_run': [], 'damage_jump': [], 'damage_fall': []}
+        path = '../MergingCopyFatalEcho/data/graphics/'
+        self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': [], 'damage_idle': [], 'damage_run': [], 'damage_jump': [], 'damage_fall': [], 'attack': [], 'damage_attack': []}
         animation_data = load_animations(path, 'player')
         self.animation_frames = animation_data[0]
         for animation in self.animations.keys():
@@ -139,39 +161,48 @@ class Player(pygame.sprite.Sprite):
         while self.frame >= len(self.anim):
             if loop:
                 self.frame -= len(self.anim)
+            else:
+                self.frame = 0
+                break
         image = self.animations[self.action][self.anim[self.frame]]
         self.image = pygame.transform.flip(image, self.flip, False)
 
 
     def status(self):
         self.jump = False
+        if self.player_attack:
+            if self.invincibility:
+                self.change_action('damage_attack')
+            else:
+                self.change_action('attack')
 
-        if self.movement[1] < 0:
-            if self.invincibility:
-                self.change_action('damage_jump')
-            else:
-                self.change_action('jump')
-        elif self.movement[1] > 1:
-            if self.invincibility:
-                self.change_action('damage_fall')
-            else:
-                self.change_action('fall')
         else:
-            if self.movement[0] == 0:
+            if self.movement[1] < 0:
                 if self.invincibility:
-                    self.change_action('damage_idle')
+                    self.change_action('damage_jump')
                 else:
-                    self.change_action('idle')
-            if self.movement[0] > 0:
+                    self.change_action('jump')
+            elif self.movement[1] > 1:
                 if self.invincibility:
-                    self.change_action('damage_run')
+                    self.change_action('damage_fall')
                 else:
-                    self.change_action('run')
-            if self.movement[0] < 0:
-                if self.invincibility:
-                    self.change_action('damage_run')
-                else:
-                    self.change_action('run')
+                    self.change_action('fall')
+            else:
+                if self.movement[0] == 0:
+                    if self.invincibility:
+                        self.change_action('damage_idle')
+                    else:
+                        self.change_action('idle')
+                if self.movement[0] > 0:
+                    if self.invincibility:
+                        self.change_action('damage_run')
+                    else:
+                        self.change_action('run')
+                if self.movement[0] < 0:
+                    if self.invincibility:
+                        self.change_action('damage_run')
+                    else:
+                        self.change_action('run')
 
     def health_update(self):
         self.full_hearts()
@@ -182,12 +213,19 @@ class Player(pygame.sprite.Sprite):
     def update(self, scroll):
         self.get_input()
         # gravity
-        self.gravity()
-        self.movement[1] += self.vertical_momentum
+
+        if not self.DEBUG:
+            self.gravity()
+            self.movement[1] += self.vertical_momentum
 
         self.rect.x -= scroll[0]
         self.rect.y -= scroll[1]
 
-        self.implement_anim(True)
-        self.status()
+        if self.player_attack:
+            self.implement_anim(False)
+            if self.frame == 0:
+                self.player_attack = False
+        else:
+            self.implement_anim(True)
 
+        self.status()

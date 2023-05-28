@@ -5,6 +5,7 @@ from score import score_keeping
 import button
 from level_map import Level
 from pygame.locals import *
+from Tiles import animated_tile
 
 pygame.init()  # initiate pygame
 pygame.mixer.init()
@@ -68,6 +69,9 @@ armour_trade_bubble = pygame.image.load('data/graphics/images/armour_trade_bubbl
 mushroom_trade_bubble = pygame.transform.scale(mushroom_trade_bubble, (1200, 200))
 armour_trade_bubble = pygame.transform.scale(armour_trade_bubble, (1200, 200))
 logo_img = pygame.transform.scale(logo_img, (1200, 640))
+shield = pygame.sprite.GroupSingle()
+shield_anim = animated_tile(rescaled_width / 2 + 200, rescaled_height /2 + 20)
+shield.add(shield_anim)
 
 # create button instances
 #to remember order of function:
@@ -136,7 +140,7 @@ screen_change = False
 main_music = 'unpaused'
 merchant_mode = 'main'
 merchant_collide = False
-level = Level([], 'data/levels/level_5/', display, 'Simon')
+level = Level([], 'data/levels/level_1/', display, 'Simon')
 RUNNING, PAUSE, TITLESCREEN, STARTSCREEN, ENDSCREEN, EASTEREGG, EEPAUSE, MERCHANT, MAINMENU = 0, 1, 2, 3, 4, 5, 6, 7, 8
 state = TITLESCREEN
 stop_drawing = False
@@ -192,8 +196,16 @@ while True:
                 if pygame.key.get_pressed():
                     if e.key != pygame.K_RETURN:
                         state = MAINMENU
+        if e.type == pygame.MOUSEBUTTONDOWN:
+            if level.dead == False:
+                level.player_attack = True
+                level.player_swing()
         if e.type == pygame.MOUSEBUTTONUP:
+            if level.dead == False:
+                level.player_attack = False
+                level.player_swing()
             clicked = False
+
 
     else:
         if state == RUNNING:
@@ -254,9 +266,10 @@ while True:
                 merchantbuy_surf = merchantbuy_font.render(str(coins), 1, (0, 0, 0))
                 merchantbuy_pos = [SCREEN_WIDTH * 1 / 2 + 300, screen_height * 2 / 4]
                 screen.blit(merchantbuy_surf, merchantbuy_pos)
-                logo(shield_icon_img, rescaled_width / 2 + 200, rescaled_height /2 + 20)
-                logo(coins_inv_img,SCREEN_WIDTH * 1 / 2 + 300, screen_height * 2 / 4 - 100)
-                logo(coins_needed_img,SCREEN_WIDTH * 1 / 2 + 300, screen_height * 2 / 4 + 60)
+                shield.update()
+                shield.draw(screen)
+                logo(coins_inv_img, SCREEN_WIDTH * 1 / 2 + 300, screen_height * 2 / 4 - 100)
+                logo(coins_needed_img, SCREEN_WIDTH * 1 / 2 + 300, screen_height * 2 / 4 + 60)
                 if armour_button.draw(screen) and clicked == False:
                     button_sound.play()
                     level.armour_trade(level.armour_trade_check())
