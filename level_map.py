@@ -48,6 +48,8 @@ class Level:
 		# used to calcuate final score
 		self.final_score = True
 		self.last_level = last_level
+		self.bad_ending = False
+		self.good_ending = False
 		self.imposter_kill = False
 		self.damage = 10
 		self.time_attacked = 0
@@ -74,6 +76,8 @@ class Level:
 		self.coin = pygame.sprite.Group()
 		self.Death = pygame.sprite.Group()
 		self.tree = pygame.sprite.Group()
+		self.GoodEnd = pygame.sprite.Group()
+		self.BadEnd = pygame.sprite.Group()
 		self.orb_group = pygame.sprite.Group()
 		self.mushroom_group = pygame.sprite.Group()
 		self.blob_group = pygame.sprite.Group()
@@ -84,7 +88,10 @@ class Level:
 		self.merchant_group = pygame.sprite.Group()
 		self.platform_group = pygame.sprite.Group()
 		self.Spawn = pygame.sprite.GroupSingle()
-		self.npc_group = pygame.sprite.Group()
+		self.npc0 = pygame.sprite.Group()
+		self.npc1 = pygame.sprite.Group()
+		self.npc2 = pygame.sprite.Group()
+		self.npc3 = pygame.sprite.Group()
 		self.End = pygame.sprite.Group()
 		self.merchant_speak = False
 		self.merchant_speak1 = False
@@ -136,6 +143,10 @@ class Level:
 		self.headslope_sprites = self.create_sprite(self.headslope_layout, 'TopSlopes')
 		self.spawn = import_csv_files(self.game_map['Spawn'])
 		self.create_sprite(self.spawn, 'Spawn')
+		self.badending = import_csv_files(self.game_map['BadEnding'])
+		self.create_sprite(self.badending, 'BadEnding')
+		self.goodending = import_csv_files(self.game_map['GoodEnding'])
+		self.create_sprite(self.goodending, 'GoodEnding')
 		self.death = import_csv_files(self.game_map['Death'])
 		self.create_sprite(self.death, 'Death')
 
@@ -183,7 +194,7 @@ class Level:
 		pygame.draw.rect(screen, bg_colour, bg_rect)
 		screen.blit(text_surface, text_rect)
 	def npc_speak(self):
-		for npc in self.npc_group.sprites():
+		for npc in self.npc0.sprites():
 			player = self.player.sprite
 			if abs(player.rect.x - npc.rect.x) < 200:
 				self.speaking = True
@@ -191,7 +202,35 @@ class Level:
 				self.speaking = False
 			if self.speaking:
 				self.draw_speech_bubble(self.surface,"Hello sir, have you heard of the outbreak about 3 leagues west?",(255, 255, 0), (175, 175, 0),npc.rect.midtop, 18)
-				#self.draw_speech_bubble(self.surface,"Bet it's another Duhan special, those circus clowns.",(255, 255, 0), (175, 175, 0), npc.rect.midtop, 18)
+		for npc in self.npc1.sprites():
+				player = self.player.sprite
+				if abs(player.rect.x - npc.rect.x) < 200:
+					self.speaking = True
+				else:
+					self.speaking = False
+				if self.speaking:
+					self.draw_speech_bubble(self.surface,"The infection takes over the mind, controlling the being to do their bidding",
+											(255, 255, 0), (175, 175, 0), npc.rect.midtop, 18)
+		for npc in self.npc2.sprites():
+				player = self.player.sprite
+				if abs(player.rect.x - npc.rect.x) < 200:
+					self.speaking = True
+				else:
+					self.speaking = False
+				if self.speaking:
+					self.draw_speech_bubble(self.surface,
+											"Enter the hill, there you will decide your fate, and the fate of the world itself.",
+											(255, 255, 0), (175, 175, 0), npc.rect.midtop, 18)
+		for npc in self.npc3.sprites():
+				player = self.player.sprite
+				if abs(player.rect.x - npc.rect.x) < 200:
+					self.speaking = True
+				else:
+					self.speaking = False
+				if self.speaking:
+					self.draw_speech_bubble(self.surface,
+											"For good, on the right, or for evil, on the left. This is what you MUST CHOOSE!", (255, 255, 0), (175, 175, 0), npc.rect.midtop, 18)
+
 	def mushroom_trade(self, boolean):
 		if boolean == True:
 			self.mushroom_inv -= 1
@@ -212,7 +251,7 @@ class Level:
 		return (level_data)
 
 	def create_sprite(self, layout, type):
-		if self.path == 'data/levels/level_4/':
+		if self.path == 'data/levels/level_5/':
 			row_index = 0
 			for row in layout:
 				col_index = 0
@@ -233,8 +272,18 @@ class Level:
 							npc_layout = slicing_tiles('data/graphics/FlashbackTerrain/Npc/npc_1.png', (32, 32))
 							# tile = npc_layout[int(col)]
 							# sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tile)
-							spritef = enemy.NPC(col_index * 32, row_index * 32)
-							self.npc_group.add(spritef)
+							if col == '0':
+								spritef = enemy.NPC(col_index * 32, row_index * 32, 0)
+								self.npc0.add(spritef)
+							if col == '1':
+								sprites = enemy.NPC(col_index * 32, row_index * 32, 1)
+								self.npc1.add(sprites)
+							if col == '2':
+								sprited = enemy.NPC(col_index * 32, row_index * 32, 2)
+								self.npc2.add(sprited)
+							if col == '3':
+								spriteL = enemy.NPC(col_index * 32, row_index * 32 - 4, 3)
+								self.npc3.add(spriteL)
 						'''if type == 'UpPlatform':
                             plat_layout = slicing_tiles('data/graphics/SimonTerrain/Platform/moving_platforms.png', (32,32))
                             tile = plat_layout[int(col)]
@@ -320,6 +369,16 @@ class Level:
 							if col == '1':
 								sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32 - 32], born_set)
 								self.End.add(sprite)
+						if type == 'GoodEnding':
+							end2 = slicing_tiles('data/graphics/FlashbackTerrain/Spawn/light_path.png', (32, 64))
+							good_set = end2[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32 - 32], good_set)
+							self.GoodEnd.add(sprite)
+						if type == 'BadEnding':
+							end = slicing_tiles('data/graphics/FlashbackTerrain/Spawn/dark_path.png', (32, 64))
+							borned_set = end[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32 - 32],borned_set)
+							self.BadEnd.add(sprite)
 					col_index += 1
 				row_index += 1
 			self.tile_sprites = self.tiles.sprites()
@@ -390,7 +449,7 @@ class Level:
 					col_index += 1
 				row_index += 1
 			self.tile_sprites = self.tiles.sprites()
-		elif self.path == 'data/levels/level_1/' or self.path == 'data/levels/level_2/' or self.path == 'data/levels/level_3/':
+		elif self.path == 'data/levels/level_1/' or 'data/levels/level_2/' or 'data/levels/level_3/' or 'data/levels/level_4/':
 			row_index = 0
 			for row in layout:
 				col_index = 0
@@ -543,7 +602,13 @@ class Level:
 						self.collision_types['left'] = True
 			for end_tile in self.End.sprites():
 				if end_tile.rect.colliderect(player.rect):
-					self.end_level()
+					self.end_level('normal')
+			for goodending in self.GoodEnd.sprites():
+				if goodending.rect.colliderect(player.rect):
+					self.end_level('good')
+			for badending in self.BadEnd.sprites():
+				if badending.rect.colliderect(player.rect):
+					self.end_level('bad')
 
 			player.y = player.rect.y
 			player.y += player.movement[1]
@@ -560,7 +625,13 @@ class Level:
 			self.attack(player)
 			for end_tile in self.End.sprites():
 				if end_tile.rect.colliderect(player.rect):
-					self.end_level()
+					self.end_level('normal')
+			for goodending in self.GoodEnd.sprites():
+				if goodending.rect.colliderect(player.rect):
+					self.end_level('good')
+			for badending in self.BadEnd.sprites():
+				if badending.rect.colliderect(player.rect):
+					self.end_level('bad')
 
 			if self.collision_types['bottom']:
 				player.collide_bottom = True
@@ -779,35 +850,65 @@ class Level:
 								player.invincibility = True
 								self.start_time_attack = time.time()
 								self.health -= 2
-
-	def end_level(self):
-		loading_imgs = []
-		for i in range(1, 4):
-			loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
-			loading_img = pygame.transform.scale(loading_img, (1200, 640))
-			loading_imgs.append(loading_img)
-		for x in range(240):
-			for imgs in loading_imgs:
-				logo(imgs, 0, 0)
-				pygame.display.update()
-		score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, self.mushroom_taken])
-		n = 0
-		final_score = 0
-		if self.last_level:
-			for _, action, ___ in walk('data/levels/'):
-				if n > 3:
-					n = 3
-				f = open(f'data/levels/level_{n}/score', 'r')
-				data = f.read()
+	def end_level(self, type):
+		if type == 'bad':
+			loading_imgs = []
+			for i in range(1, 4):
+				loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
+				loading_img = pygame.transform.scale(loading_img, (1200, 640))
+				loading_imgs.append(loading_img)
+			for x in range(240):
+				for imgs in loading_imgs:
+					logo(imgs, 0, 0)
+					pygame.display.update()
+			score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, self.mushroom_taken])
+			n = 0
+			final_score = 0
+			self.bad_ending = True
+			self.done = True
+		if type == 'good':
+			loading_imgs = []
+			for i in range(1, 4):
+				loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
+				loading_img = pygame.transform.scale(loading_img, (1200, 640))
+				loading_imgs.append(loading_img)
+			for x in range(240):
+				for imgs in loading_imgs:
+					logo(imgs, 0, 0)
+					pygame.display.update()
+			score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, self.mushroom_taken])
+			n = 0
+			final_score = 0
+			self.good_ending = True
+			self.done = True
+		if type == 'normal':
+			loading_imgs = []
+			for i in range(1, 4):
+				loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
+				loading_img = pygame.transform.scale(loading_img, (1200, 640))
+				loading_imgs.append(loading_img)
+			for x in range(240):
+				for imgs in loading_imgs:
+					logo(imgs, 0, 0)
+					pygame.display.update()
+			score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, self.mushroom_taken])
+			n = 0
+			final_score = 0
+			if self.last_level:
+				for _, action, ___ in walk('data/levels/'):
+					if n > 3:
+						n = 3
+					f = open(f'data/levels/level_{n}/score', 'r')
+					data = f.read()
+					f.close()
+					final_score += int(data)
+					n += 1
+				f = open('data/levels/Final_Score', 'w')
+				f.write(str(final_score))
 				f.close()
-				final_score += int(data)
-				n += 1
-			f = open('data/levels/Final_Score', 'w')
-			f.write(str(final_score))
-			f.close()
-		self.done = True
-		if self.last_level and self.done:
-			self.game_over = True
+			self.done = True
+			if self.last_level and self.done:
+				self.game_over = True
 
 	def merchant_check(self):
 		if self.merchant_beside != 0:
@@ -915,8 +1016,14 @@ class Level:
 		self.coin.draw(self.surface)
 		self.coin.update(self.scroll)
 		self.blob_group.draw(self.surface)
-		self.npc_group.update(self.scroll)
-		self.npc_group.draw(self.surface)
+		self.npc0.update(self.scroll)
+		self.npc0.draw(self.surface)
+		self.npc1.update(self.scroll)
+		self.npc1.draw(self.surface)
+		self.npc2.update(self.scroll)
+		self.npc2.draw(self.surface)
+		self.npc3.update(self.scroll)
+		self.npc3.draw(self.surface)
 		self.swordsman_group.update(self.scroll)
 		self.swordsman_group.draw(self.surface)
 		self.wizard_group.update(self.scroll)
@@ -925,13 +1032,17 @@ class Level:
 		self.orb_group.draw(self.surface)
 		self.End.update(self.scroll)
 		self.End.draw(self.surface)
+		self.BadEnd.update(self.scroll)
+		self.BadEnd.draw(self.surface)
+		self.GoodEnd.update(self.scroll)
+		self.GoodEnd.draw(self.surface)
 		self.Death.update(self.scroll)
 		self.barriers.update(self.scroll)
 		self.Spawn.update(self.scroll)
 		self.Spawn.draw(self.surface)
 		self.merchant_group.update(self.scroll)
 		self.merchant_group.draw(self.surface)
-		if self.path == 'data/levels/level_4/':
+		if self.path == 'data/levels/level_5/':
 			self.npc_speak()
 
 		#imposter win

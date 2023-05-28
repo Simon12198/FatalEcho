@@ -6,9 +6,16 @@ screen = pygame.display.set_mode(WINDOW_SIZE)  # initiate screen
 from animation import load_animations
 from player import Player
 class NPC(pygame.sprite.Sprite):
-	def __init__(self, x, y):
+	def __init__(self, x, y, id):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load('data/graphics/FlashbackTerrain/Npc/npc_2.png').convert_alpha()
+		if id == 0:
+			self.image = pygame.image.load('data/graphics/FlashbackTerrain/Npc/npc_1.png').convert_alpha()
+		if id == 1:
+			self.image = pygame.image.load('data/graphics/FlashbackTerrain/Npc/npc_2.png').convert_alpha()
+		if id == 2:
+			self.image = pygame.image.load('data/graphics/FlashbackTerrain/Npc/npc_3.png').convert_alpha()
+		if id == 3:
+			self.image = pygame.image.load('data/graphics/FlashbackTerrain/Npc/npc_4.png').convert_alpha()
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y

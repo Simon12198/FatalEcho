@@ -136,7 +136,7 @@ screen_change = False
 main_music = 'unpaused'
 merchant_mode = 'main'
 merchant_collide = False
-level = Level([], 'data/levels/level_1/', display, 'Simon')
+level = Level([], 'data/levels/level_5/', display, 'Simon')
 RUNNING, PAUSE, TITLESCREEN, STARTSCREEN, ENDSCREEN, EASTEREGG, EEPAUSE, MERCHANT, MAINMENU = 0, 1, 2, 3, 4, 5, 6, 7, 8
 state = TITLESCREEN
 stop_drawing = False
@@ -210,18 +210,18 @@ while True:
                 level.draw_hearts()
             screen.blit(pygame.transform.scale(display, WINDOW_SIZE), (0, 0))
             if level.done:
-                if n == 3:
-                    level = Level([], f'data/levels/level_{n}/', display, 'Simon', True, [level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
-                elif n > 3:
-                    state = ENDSCREEN
-                    n = 1
-                    current_level = 0
+                if level.good_ending:
+                    level = Level([], f'data/levels/level_6/', display, 'Simon', True, [level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
+                if level_bad_ending:
+                    level = Level([], f'data/levels/level_7/', display, 'Simon', True, [level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
                 else:
                     level = Level([], f'data/levels/level_{n}/', display, 'Simon', info = [level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
                 current_level = n
                 n += 1
             if level.game_over:
                 state = ENDSCREEN
+                n = 1
+                current_level = 0
             pygame.display.update()  # update the screen
         elif state == MERCHANT:
             #code for merchants, buttons and everything

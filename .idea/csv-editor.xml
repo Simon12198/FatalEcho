@@ -122,6 +122,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\data\levels\level_5\level_5_Endings.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data\levels\level_5\level_5_Npc.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>
