@@ -675,8 +675,12 @@ class Level:
 				if player.movement[1] < 0:
 					player.rect.top = platform.rect.bottom
 					self.collision_types['top'] = True
-			else:
-				self.on_platform = False
+			if platform.rect.colliderect(pygame.Rect(player.rect.x - 1, player.rect.top, player.rect.width, player.rect.height)):
+				player.rect.left = platform.rect.right
+				self.collision_types['left'] = True
+			if platform.rect.colliderect(pygame.Rect(player.rect.x + 1, player.rect.top, player.rect.width, player.rect.height)):
+				player.rect.right = platform.rect.left
+				self.collision_types['right'] = True
 
 
 	def coin_collision(self, player):
@@ -844,9 +848,9 @@ class Level:
 	def draw_bg(self):
 		self.keys = pygame.key.get_pressed()
 		player = self.player.sprite
-		if self.keys[pygame.K_RIGHT] and self.player_direction < 3000 or self.on_platform == True and player.movement[1] > 0:
+		if self.keys[pygame.K_RIGHT] and self.player_direction < 3000:
 			self.player_direction += 1
-		elif self.keys[pygame.K_LEFT] and self.player_direction > 0 or self.on_platform == True and player.movement[1] < 0:
+		elif self.keys[pygame.K_LEFT] and self.player_direction > 0:
 			self.player_direction -= 1
 		for x in range(40):
 			speed = 1
