@@ -74,17 +74,22 @@ class Level:
 		self.coin = pygame.sprite.Group()
 		self.Death = pygame.sprite.Group()
 		self.tree = pygame.sprite.Group()
+		self.orb_group = pygame.sprite.Group()
 		self.mushroom_group = pygame.sprite.Group()
 		self.blob_group = pygame.sprite.Group()
 		self.slopesgroup = pygame.sprite.Group()
 		self.headslopesgroup = pygame.sprite.Group()
 		self.swordsman_group = pygame.sprite.Group()
+		self.wizard_group = pygame.sprite.Group()
 		self.merchant_group = pygame.sprite.Group()
 		self.platform_group = pygame.sprite.Group()
 		self.Spawn = pygame.sprite.GroupSingle()
+		self.npc_group = pygame.sprite.Group()
 		self.End = pygame.sprite.Group()
 		self.merchant_speak = False
 		self.merchant_speak1 = False
+		self.shoot_cooldown = 0
+		self.ammo = 5
 		# use to calculate score
 		self.score = 0
 		self.coin_count = 0
@@ -115,6 +120,10 @@ class Level:
 		self.create_sprite(self.Mushroom, 'Mushroom')
 		self.Swordsman = import_csv_files(self.game_map['Swordsman'])
 		self.create_sprite(self.Swordsman, 'Swordsman')
+		self.Wizard = import_csv_files(self.game_map['Wizard'])
+		self.create_sprite(self.Wizard, 'Wizard')
+		self.Npc = import_csv_files(self.game_map['Npc'])
+		self.create_sprite(self.Npc, 'Npc')
 		self.Imposter = import_csv_files(self.game_map['Imposter'])
 		self.create_sprite(self.Imposter, 'Imposter')
 		self.merchantslayout = import_csv_files(self.game_map['Merchant'])
@@ -156,7 +165,33 @@ class Level:
 		else:
 			return False
 
+	def draw_speech_bubble(self, screen, text, text_colour, bg_colour, pos, size):
 
+		font = pygame.font.SysFont(None, size)
+		text_surface = font.render(text, True, text_colour)
+		text_rect = text_surface.get_rect(midbottom=pos)
+
+		# background
+		bg_rect = text_rect.copy()
+		bg_rect.inflate_ip(5, 5)
+
+		# Frame
+		frame_rect = bg_rect.copy()
+		frame_rect.inflate_ip(2, 2)
+
+		pygame.draw.rect(screen, text_colour, frame_rect)
+		pygame.draw.rect(screen, bg_colour, bg_rect)
+		screen.blit(text_surface, text_rect)
+	def npc_speak(self):
+		for npc in self.npc_group.sprites():
+			player = self.player.sprite
+			if abs(player.rect.x - npc.rect.x) < 200:
+				self.speaking = True
+			else:
+				self.speaking = False
+			if self.speaking:
+				self.draw_speech_bubble(self.surface,"Hello sir, have you heard of the outbreak about 3 leagues west?",(255, 255, 0), (175, 175, 0),npc.rect.midtop, 18)
+				#self.draw_speech_bubble(self.surface,"Bet it's another Duhan special, those circus clowns.",(255, 255, 0), (175, 175, 0), npc.rect.midtop, 18)
 	def mushroom_trade(self, boolean):
 		if boolean == True:
 			self.mushroom_inv -= 1
@@ -177,7 +212,120 @@ class Level:
 		return (level_data)
 
 	def create_sprite(self, layout, type):
-		if self.path == 'data/levels/level_0/':
+		if self.path == 'data/levels/level_4/':
+			row_index = 0
+			for row in layout:
+				col_index = 0
+				for col in row:
+					if col != '-1':
+						if type == 'Grass':
+							terrain_layout = slicing_tiles('data/graphics/FlashbackTerrain/Grass/Grass.png', (32, 32))
+							tile = terrain_layout[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tile)
+							self.tiles.add(sprite)
+						if type == 'Platform':
+							plat_layout = slicing_tiles('data/graphics/FlashbackTerrain/Platform/moving_platforms.png', (32, 32))
+							# tile = plat_layout[int(col)]
+							# sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tile)
+							sprite = enemy.Platform(col_index * 32, row_index * 32)
+							self.platform_group.add(sprite)
+						if type == 'Npc':
+							npc_layout = slicing_tiles('data/graphics/FlashbackTerrain/Npc/npc_1.png', (32, 32))
+							# tile = npc_layout[int(col)]
+							# sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tile)
+							spritef = enemy.NPC(col_index * 32, row_index * 32)
+							self.npc_group.add(spritef)
+						'''if type == 'UpPlatform':
+                            plat_layout = slicing_tiles('data/graphics/SimonTerrain/Platform/moving_platforms.png', (32,32))
+                            tile = plat_layout[int(col)]
+                            #sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tile)
+                            sprite = Platform(col_index * 32, row_index * 32, 0, 1)
+                            self.platform_group.add(sprite)'''
+						if type == 'Barrier':
+							terrain_layout = slicing_tiles('data/graphics/images/barrier.png', (32, 32))
+							tile = terrain_layout[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tile)
+							self.barriers.add(sprite)
+						if type == 'Gold':
+							gold = slicing_tiles('data/graphics/FlashbackTerrain/Coin/gold_coin.png', (32, 32))
+							tiles = gold[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiles)
+							self.coin.add(sprite)
+						if type == 'Death':
+							death = slicing_tiles('data/graphics/SimonTerrain/Death/Death.png', (32, 32))
+							tileset = death[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tileset)
+							self.Death.add(sprite)
+						if type == 'Trees':
+							tree_layout = slicing_tiles('data/graphics/FlashbackTerrain/Tree/Tree_tileset.png', (32, 32))
+							tiled = tree_layout[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+							self.tree.add(sprite)
+						if type == 'Merchant':
+							tree_layout = slicing_tiles('data/graphics/images/merchant.png', (32, 32))
+							tiled = tree_layout[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+							self.merchant_group.add(sprite)
+						if type == 'Mushroom':
+							mush_layout = slicing_tiles('data/graphics/images/mushroom_0.png', (16, 16))
+							tiled = mush_layout[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+							mushroom = enemy.Mushroom(col_index * 32, row_index * 32 + 18)
+							self.mushroom_group.add(mushroom)
+						if type == 'Swordsman':
+							enemy_layout = slicing_tiles('data/graphics/images/swordsman.png', (32, 32))
+							#                         tiled = enemy_layout[int(col)]
+							#                       sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+							swordsman = enemy.Swordsman(col_index * 32, row_index * 32)
+							self.swordsman_group.add(swordsman)
+						if type == 'Wizard':
+							enemy_layout = slicing_tiles('data/graphics/images/swordsman.png', (32, 32))
+							#                         tiled = enemy_layout[int(col)]
+							#                       sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+							wizard = enemy.Wizard(col_index * 32, row_index * 32 - 8)
+							self.wizard_group.add(wizard)
+						if type == 'Imposter':
+							imposter_layout = slicing_tiles('data/graphics/images/imposter_tree.png', (32, 32))
+							tiled = imposter_layout[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+							imposter = enemy.Imposter(col_index * 32, row_index * 32 - 32)
+							self.imposter_group.add(imposter)
+						if type == 'Blobs':
+							blob_layout = slicing_tiles('data/graphics/images/blob_img.png', (97, 30))
+							tiled = blob_layout[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+							blob = enemy.Blob(col_index * 32, row_index * 32 + 15)
+							self.blob_group.add(sprite)
+						if type == 'Slopes':
+							slope_layout = slicing_tiles('data/graphics/FlashbackTerrain/Slopes/Slopes.png', (32, 32))
+							ramps = slope_layout[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], ramps)
+							self.slopesgroup.add(sprite)
+						if type == 'TopSlopes':
+							slope_layout = slicing_tiles('data/graphics/FlaskbackTerrain/Grass/Grass.png', (32, 32))
+							topramp = slope_layout[int(col)]
+							sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], topramp)
+							self.headslopesgroup.add(sprite)
+						if type == 'Spawn':
+							life = slicing_tiles('data/graphics/FlashbackTerrain/Spawn/spawnportal.png', (32, 64))
+							born_set = life[int(col)]
+							if col == '0':
+								sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], born_set)
+								if not self.dead:
+									self.Spawn.add(sprite)
+								self.dead = True
+								player = Player([col_index * 32, row_index * 32])
+								self.player.add(player)
+								self.dead = False
+							if col == '1':
+								sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32 - 32], born_set)
+								self.End.add(sprite)
+					col_index += 1
+				row_index += 1
+			self.tile_sprites = self.tiles.sprites()
+			self.barrier_sprites = self.barriers.sprites()
+			self.slope_sprite = self.slopesgroup.sprites()
+		elif self.path == 'data/levels/level_0/':
 			# Used to create sprite_groups to prepare for drawing
 			row_index = 0
 			for row in layout:
@@ -302,6 +450,12 @@ class Level:
 	 #                       sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
 							swordsman = enemy.Swordsman(col_index * 32, row_index * 32)
 							self.swordsman_group.add(swordsman)
+						if type == 'Wizard':
+							enemy_layout = slicing_tiles('data/graphics/wizard/idle/idle_0.png', (32, 32))
+							#                         tiled = enemy_layout[int(col)]
+							#                       sprite = ground_tile(self.Simon_tile_size, [col_index * 32, row_index * 32], tiled)
+							wizard = enemy.Wizard(col_index * 32, row_index * 32 - 8)
+							self.wizard_group.add(wizard)
 						if type == 'Imposter':
 							imposter_layout = slicing_tiles('data/graphics/images/imposter_tree.png', (32,32))
 							tiled = imposter_layout[int(col)]
@@ -379,14 +533,14 @@ class Level:
 					if player.movement[0] < 0:
 						player.rect.left = tile.rect.right
 						self.collision_types['left'] = True
-			'''for platform in self.platform_group.sprites():
+			for platform in self.platform_group.sprites():
 				if platform.rect.colliderect(player.rect):
 					if player.movement[0] > 0:
 						player.rect.right = platform.rect.left
 						self.collision_types['right'] = True
 					if player.movement[0] < 0:
 						player.rect.left = platform.rect.right
-						self.collision_types['left'] = True'''
+						self.collision_types['left'] = True
 			for end_tile in self.End.sprites():
 				if end_tile.rect.colliderect(player.rect):
 					self.end_level()
@@ -509,32 +663,20 @@ class Level:
 
 		if maxVerticalOffset:
 			player.rect.bottom -= maxVerticalOffset
+
 	def platform_collision(self, player):
 		for platform in self.platform_group.sprites():
-			if player.rect.bottom <= platform.rect.top and platform.rect.colliderect(player.rect):
+			if platform.rect.colliderect(pygame.Rect(player.rect.left, player.rect.top, player.rect.width, player.rect.height + 1)):
 				self.on_platform = True
-			if platform.rect.colliderect(player.rect):
-				if player.movement[1] < 0: #below platform
+				if player.movement[1] > 0:
+					player.rect.bottom = platform.rect.top
+					player.rect.x += platform.move_x * platform.move_direction
+					self.collision_types['bottom'] = True
+				if player.movement[1] < 0:
 					player.rect.top = platform.rect.bottom
 					self.collision_types['top'] = True
-				if player.movement[0] > 0: #player right of platform
-					player.rect.x += 3
-					self.collision_types['right'] = True
-				if player.movement[0] < 0: #player is left of the platform
-					player.rect.x -= 3
-					self.collision_types['left'] = True
-			#platforms moving in x
-			if platform.rect.colliderect(player.rect.x + player.movement[0], player.rect.y, player.rect.width, player.rect.height):
-				player.rect.bottom = platform.rect.top
-				if player.movement[0] > 0: #player right of platform
-					player.rect.x -= 1
-				if player.movement[0] < 0: #player is left of the platform
-					player.rect.x += 1
-				if platform.move_x != 0:
-					if platform.move_direction < 0:
-						player.rect.x -= 3
-					if platform.move_direction > 0:
-						player.rect.x += 3
+			else:
+				self.on_platform = False
 
 
 	def coin_collision(self, player):
@@ -571,7 +713,6 @@ class Level:
 						self.imposter_kill = True
 			for swordsman in self.swordsman_group.sprites():
 				swordsman.attack_animation = False
-
 				if swordsman.rect.colliderect(player.rect):
 					realCollisionSwords = pygame.sprite.collide_mask(player, swordsman)
 					if realCollisionSwords:
@@ -593,6 +734,44 @@ class Level:
 					elif self.direction == 'right':
 						swordsman.change_flip(True)
 						self.direction = ''
+			for wizard in self.wizard_group.sprites():
+				self.shoot_cooldown = 0
+				if self.shoot_cooldown > 0:
+					self.shoot_cooldown -= 1
+				wizard.attack_animation = False
+				if abs(player.rect.x - wizard.rect.x) < 200 and player.rect.y - 8 == wizard.rect.y :
+					wizard.attack_animation = True
+					if player.rect.x > wizard.rect.x:
+						wizard.change_flip(True)
+						if self.shoot_cooldown == 0 and self.ammo > 0:
+							self.shoot_cooldown = 10
+							orbs = enemy.Orb(wizard.rect.centerx + 10, wizard.rect.centery - 16, 1)
+							self.orb_group.add(orbs)
+							self.ammo -= 1
+						self.direction = 'left'
+					elif player.rect.x < wizard.rect.x:
+						if self.shoot_cooldown == 0 and self.ammo > 0:
+							self.shoot_cooldown = 10
+							orbleft = enemy.Orb(wizard.rect.centerx - 20, wizard.rect.centery - 16, -1)
+							self.orb_group.add(orbleft)
+							self.ammo -= 1
+						wizard.change_flip(False)
+						self.direction = 'right'
+					else:
+						if self.direction == 'left':
+							wizard.change_flip(False)
+							self.direction = ''
+						elif self.direction == 'right':
+							wizard.change_flip(True)
+							self.direction = ''
+					# check collision with characters
+					for orb in self.orb_group.sprites():
+						if pygame.Rect.colliderect(orb.rect, player.rect):
+							orb.kill()
+							if player.invincibility == False:
+								player.invincibility = True
+								self.start_time_attack = time.time()
+								self.health -= 2
 
 	def end_level(self):
 		loading_imgs = []
@@ -661,9 +840,10 @@ class Level:
 		self.surface.blit(img, (x, y))
 	def draw_bg(self):
 		self.keys = pygame.key.get_pressed()
-		if self.keys[pygame.K_RIGHT] and self.player_direction < 3000:
+		player = self.player.sprite
+		if self.keys[pygame.K_RIGHT] and self.player_direction < 3000 or self.on_platform == True and player.movement[1] > 0:
 			self.player_direction += 1
-		elif self.keys[pygame.K_LEFT] and self.player_direction > 0:
+		elif self.keys[pygame.K_LEFT] and self.player_direction > 0 or self.on_platform == True and player.movement[1] < 0:
 			self.player_direction -= 1
 		for x in range(40):
 			speed = 1
@@ -728,8 +908,14 @@ class Level:
 		self.coin.draw(self.surface)
 		self.coin.update(self.scroll)
 		self.blob_group.draw(self.surface)
+		self.npc_group.update(self.scroll)
+		self.npc_group.draw(self.surface)
 		self.swordsman_group.update(self.scroll)
 		self.swordsman_group.draw(self.surface)
+		self.wizard_group.update(self.scroll)
+		self.wizard_group.draw(self.surface)
+		self.orb_group.update(self.scroll)
+		self.orb_group.draw(self.surface)
 		self.End.update(self.scroll)
 		self.End.draw(self.surface)
 		self.Death.update(self.scroll)
@@ -738,6 +924,8 @@ class Level:
 		self.Spawn.draw(self.surface)
 		self.merchant_group.update(self.scroll)
 		self.merchant_group.draw(self.surface)
+		if self.path == 'data/levels/level_4/':
+			self.npc_speak()
 
 		#imposter win
 		if self.imposter_kill and self.imposter_attacking >= 5:

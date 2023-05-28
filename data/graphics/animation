@@ -12,3 +12,8 @@ imposter attack 1;1;1;1;1;1;1;1
 swordsman idle 1
 swordsman attack 7;7;7;7;7
 swordsman run 7;7;7;7;7;7;7
+wizard idle 1
+wizard attack 7;7;7
+wizard run 7;7;7;7;7;7;7
+orb idle 1
+orb moving 1
