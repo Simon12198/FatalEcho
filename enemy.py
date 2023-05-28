@@ -23,13 +23,6 @@ class NPC(pygame.sprite.Sprite):
 	def update(self, scroll):
 		self.rect.x -= scroll[0]
 		self.rect.y -= scroll[1]
-		'''if abs(player.rect.x - self.rect.x) < 150:
-			self.speaking = True
-		else:
-			self.speaking = False
-	def draw_speech(self, screen):
-		if self.speaking:
-			draw_speech_bubble(screen, "Hello sir, have you heard of the outbreak about 3 leagues west? Bet it's another Duhan special, those circus clowns.", (255, 255, 0), (175, 175, 0), self.rect.midtop, 25)'''
 class Platform(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)

@@ -196,7 +196,7 @@ class Level:
 	def npc_speak(self):
 		for npc in self.npc0.sprites():
 			player = self.player.sprite
-			if abs(player.rect.x - npc.rect.x) < 200:
+			if abs(player.rect.x - npc.rect.x) < 120:
 				self.speaking = True
 			else:
 				self.speaking = False
@@ -204,7 +204,7 @@ class Level:
 				self.draw_speech_bubble(self.surface,"Hello sir, have you heard of the outbreak about 3 leagues west?",(255, 255, 0), (175, 175, 0),npc.rect.midtop, 18)
 		for npc in self.npc1.sprites():
 				player = self.player.sprite
-				if abs(player.rect.x - npc.rect.x) < 200:
+				if abs(player.rect.x - npc.rect.x) < 120:
 					self.speaking = True
 				else:
 					self.speaking = False
@@ -213,7 +213,7 @@ class Level:
 											(255, 255, 0), (175, 175, 0), npc.rect.midtop, 18)
 		for npc in self.npc2.sprites():
 				player = self.player.sprite
-				if abs(player.rect.x - npc.rect.x) < 200:
+				if abs(player.rect.x - npc.rect.x) < 120:
 					self.speaking = True
 				else:
 					self.speaking = False
@@ -223,13 +223,13 @@ class Level:
 											(255, 255, 0), (175, 175, 0), npc.rect.midtop, 18)
 		for npc in self.npc3.sprites():
 				player = self.player.sprite
-				if abs(player.rect.x - npc.rect.x) < 200:
+				if abs(player.rect.x - npc.rect.x) < 120:
 					self.speaking = True
 				else:
 					self.speaking = False
 				if self.speaking:
 					self.draw_speech_bubble(self.surface,
-											"For good, on the right, or for evil, on the left. This is what you MUST CHOOSE!", (255, 255, 0), (175, 175, 0), npc.rect.midtop, 18)
+											"For good, on the right, or for evil, on the left. This is what you MUST CHOOSE!", (34, 32, 52), (44, 42, 62), npc.rect.midtop, 18)
 
 	def mushroom_trade(self, boolean):
 		if boolean == True:
@@ -655,17 +655,12 @@ class Level:
 					self.collision_types['top'] = True
 		for barrier in self.barriers.sprites():
 			if barrier.rect.colliderect(player.rect):
-				realCollisionBarrier = pygame.sprite.collide_mask(player, barrier)
-				if realCollisionBarrier:
-					if player.movement[1] < 0:
-						player.rect.top = barrier.rect.bottom
-						self.collision_types['top'] = True
-					if player.movement[0] > 0:
-						player.rect.right = barrier.rect.left
-						self.collision_types['right'] = True
-					if player.movement[0] < 0:
-						player.rect.left = barrier.rect.right
-						self.collision_types['left'] = True
+				if player.movement[0] > 0:
+					player.rect.right = barrier.rect.left
+					self.collision_types['right'] = True
+				if player.movement[0] < 0:
+					player.rect.left = barrier.rect.right
+					self.collision_types['left'] = True
 
 	def mushroom_collision(self, player):
 		for mushroom in self.mushroom_group.sprites():

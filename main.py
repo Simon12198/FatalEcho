@@ -212,7 +212,7 @@ while True:
             if level.done:
                 if level.good_ending:
                     level = Level([], f'data/levels/level_6/', display, 'Simon', True, [level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
-                if level_bad_ending:
+                if level.bad_ending:
                     level = Level([], f'data/levels/level_7/', display, 'Simon', True, [level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
                 else:
                     level = Level([], f'data/levels/level_{n}/', display, 'Simon', info = [level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
