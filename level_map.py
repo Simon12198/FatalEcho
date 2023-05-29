@@ -829,7 +829,7 @@ class Level:
 					if player.rect.x > wizard.rect.x:
 						wizard.change_flip(True)
 						if self.shoot_cooldown == 0 and self.ammo > 0:
-							self.shoot_cooldown = 60
+							self.shoot_cooldown = 50
 							orbs = enemy.Orb(wizard.rect.centerx + 10, wizard.rect.centery - 16, 1)
 							self.orb_group.add(orbs)
 							self.ammo -= 1
@@ -840,7 +840,7 @@ class Level:
 					elif player.rect.x < wizard.rect.x:
 						wizard.change_flip(False)
 						if self.shoot_cooldown == 0 and self.ammo > 0:
-							self.shoot_cooldown = 60
+							self.shoot_cooldown = 50
 							orbleft = enemy.Orb(wizard.rect.centerx - 20, wizard.rect.centery - 16, -1)
 							self.orb_group.add(orbleft)
 							self.ammo -= 1
