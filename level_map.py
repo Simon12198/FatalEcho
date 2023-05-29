@@ -602,13 +602,13 @@ class Level:
 						self.collision_types['left'] = True
 			for end_tile in self.End.sprites():
 				if end_tile.rect.colliderect(player.rect):
-					self.end_level('normal')
+					self.end_level()
 			for goodending in self.GoodEnd.sprites():
 				if goodending.rect.colliderect(player.rect):
-					self.end_level('good')
+					self.end_level()
 			for badending in self.BadEnd.sprites():
 				if badending.rect.colliderect(player.rect):
-					self.end_level('bad')
+					self.end_level()
 
 			player.y = player.rect.y
 			player.y += player.movement[1]
@@ -625,13 +625,13 @@ class Level:
 			self.attack(player)
 			for end_tile in self.End.sprites():
 				if end_tile.rect.colliderect(player.rect):
-					self.end_level('normal')
+					self.end_level()
 			for goodending in self.GoodEnd.sprites():
 				if goodending.rect.colliderect(player.rect):
-					self.end_level('good')
+					self.end_level()
 			for badending in self.BadEnd.sprites():
 				if badending.rect.colliderect(player.rect):
-					self.end_level('bad')
+					self.end_level()
 
 			if self.collision_types['bottom']:
 				player.collide_bottom = True
@@ -742,10 +742,10 @@ class Level:
 					player.rect.top = platform.rect.bottom
 					self.collision_types['top'] = True
 			if platform.rect.colliderect(pygame.Rect(player.rect.x - 1, player.rect.top, player.rect.width, player.rect.height)):
-				player.rect.left = platform.rect.right
+				player.rect.left = platform.rect.right - 3
 				self.collision_types['left'] = True
 			if platform.rect.colliderect(pygame.Rect(player.rect.x + 1, player.rect.top, player.rect.width, player.rect.height)):
-				player.rect.right = platform.rect.left
+				player.rect.right = platform.rect.left + 3
 				self.collision_types['right'] = True
 
 
@@ -853,38 +853,7 @@ class Level:
 								player.invincibility = True
 								self.start_time_attack = time.time()
 								self.health -= 2
-	def end_level(self, type):
-		if type == 'bad':
-			loading_imgs = []
-			for i in range(1, 4):
-				loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
-				loading_img = pygame.transform.scale(loading_img, (1200, 640))
-				loading_imgs.append(loading_img)
-			for x in range(240):
-				for imgs in loading_imgs:
-					logo(imgs, 0, 0)
-					pygame.display.update()
-			score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, self.mushroom_taken])
-			n = 0
-			final_score = 0
-			self.bad_ending = True
-			self.done = True
-		if type == 'good':
-			loading_imgs = []
-			for i in range(1, 4):
-				loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
-				loading_img = pygame.transform.scale(loading_img, (1200, 640))
-				loading_imgs.append(loading_img)
-			for x in range(240):
-				for imgs in loading_imgs:
-					logo(imgs, 0, 0)
-					pygame.display.update()
-			score.score_keeping(self.path, self.score, [self.coin_count, self.time_elasped, self.mushroom_taken])
-			n = 0
-			final_score = 0
-			self.good_ending = True
-			self.done = True
-		if type == 'normal':
+	def end_level(self):
 			loading_imgs = []
 			for i in range(1, 4):
 				loading_img = pygame.image.load('data/graphics/loading_images/' + f'loading{i}.png').convert_alpha()
@@ -899,8 +868,8 @@ class Level:
 			final_score = 0
 			if self.last_level:
 				for _, action, ___ in walk('data/levels/'):
-					if n > 3:
-						n = 3
+					if n > 5:
+						n = 5
 					f = open(f'data/levels/level_{n}/score', 'r')
 					data = f.read()
 					f.close()
