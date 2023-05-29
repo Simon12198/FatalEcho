@@ -753,6 +753,8 @@ class Level:
 				if player.movement[1] < 0:
 					player.rect.top = platform.rect.bottom
 					self.collision_types['top'] = True
+			else:
+				self.on_platform = False
 			if platform.rect.colliderect(pygame.Rect(player.rect.x - 5, player.rect.top, player.rect.width, player.rect.height)):
 				player.rect.left = platform.rect.right - 3
 				self.collision_types['left'] = True
@@ -938,10 +940,13 @@ class Level:
 	def draw_bg(self):
 		self.keys = pygame.key.get_pressed()
 		player = self.player.sprite
-		if self.keys[pygame.K_RIGHT] and self.player_direction < 6000:
-			self.player_direction += 1
-		elif self.keys[pygame.K_LEFT] and self.player_direction > 0:
-			self.player_direction -= 1
+		if self.on_platform == True:
+			for platform in self.platform_group.sprites():
+				self.player_direction += 1 * platform.move_direction
+			if self.keys[pygame.K_RIGHT] and self.player_direction < 6000:
+				self.player_direction += 1
+			elif self.keys[pygame.K_LEFT] and self.player_direction > 0:
+				self.player_direction -= 1
 		for x in range(150):
 			speed = 1
 			for i in self.bg_imgs:

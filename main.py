@@ -139,7 +139,7 @@ screen_change = False
 main_music = 'unpaused'
 merchant_mode = 'main'
 merchant_collide = False
-level = Level([], 'data/levels/level_0/', display, 'Simon')
+level = Level([], 'data/levels/level_1/', display, 'Simon')
 RUNNING, PAUSE, TITLESCREEN, STARTSCREEN, ENDSCREEN, EASTEREGG, EEPAUSE, MERCHANT, MAINMENU = 0, 1, 2, 3, 4, 5, 6, 7, 8
 state = TITLESCREEN
 stop_drawing = False
@@ -376,7 +376,7 @@ while True:
                 display.fill(BGCOLOUR)
                 # draw the different options buttons
                 screen_text("Arrows to move, Space to jump, ESCAPE to pause, E to Interact with the Merchant.", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 50)
-                screen_text("Click to attack.", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 100)
+                screen_text("Click to attack, Jump into the End Portals.", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 100)
                 screen_text("Beware of the trees, dodge the orbs.", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 120)
                 if back_button.draw(screen) and clicked == False:
                     button_sound.play()
@@ -598,11 +598,10 @@ while True:
             screen.fill(PURPLEBG)
             logo(mini_logo_img, rescaled_width / 2 + 35, 0)
             screen_text("Arrows to move, Space to jump, ESCAPE to pause, E to Interact with the Merchant", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 50)
-            screen_text("Left click to attack", 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4 + 20)
+            screen_text("Left click to attack, Jump into the End Portals.", 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4 + 20)
             screen_text("Press any key to play", 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4 + 40)
         elif state == ENDSCREEN:
             screen.fill(BGCOLOUR)
-
             screen_text("GAME OVER, CONGRATULATIONS", 48, WHITE, SCREEN_WIDTH / 2, screen_height / 4)
             user_input = 'Enter Your Name: '
             screen_text(user_input + user_text, 48, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4)
