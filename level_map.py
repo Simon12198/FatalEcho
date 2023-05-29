@@ -96,7 +96,7 @@ class Level:
 		self.merchant_speak = False
 		self.merchant_speak1 = False
 		self.shoot_cooldown = 0
-		self.ammo = 5
+		self.ammo = 15
 		# use to calculate score
 		self.score = 0
 		self.coin_count = 0
@@ -161,6 +161,7 @@ class Level:
 			self.coin_inv -= 20
 			self.health += 2
 			self.max_health += 2
+			self.health = self.max_health
 		elif boolean == False:
 			return True
 
@@ -741,10 +742,10 @@ class Level:
 				if player.movement[1] < 0:
 					player.rect.top = platform.rect.bottom
 					self.collision_types['top'] = True
-			if platform.rect.colliderect(pygame.Rect(player.rect.x - 1, player.rect.top, player.rect.width, player.rect.height)):
+			if platform.rect.colliderect(pygame.Rect(player.rect.x - 5, player.rect.top, player.rect.width, player.rect.height)):
 				player.rect.left = platform.rect.right - 3
 				self.collision_types['left'] = True
-			if platform.rect.colliderect(pygame.Rect(player.rect.x + 1, player.rect.top, player.rect.width, player.rect.height)):
+			if platform.rect.colliderect(pygame.Rect(player.rect.x + 5, player.rect.top, player.rect.width, player.rect.height)):
 				player.rect.right = platform.rect.left + 3
 				self.collision_types['right'] = True
 
@@ -831,7 +832,7 @@ class Level:
 							self.orb_group.add(orbleft)
 							self.ammo -= 1
 						if player.player_attack:
-							wizard.health -= 10
+							wizard.health -= 20
 						if self.shoot_cooldown > 0:
 							self.shoot_cooldown -= 1
 							self.ammo += 1
@@ -852,7 +853,7 @@ class Level:
 							if player.invincibility == False:
 								player.invincibility = True
 								self.start_time_attack = time.time()
-								self.health -= 2
+								self.health -= 1.5
 	def end_level(self):
 			loading_imgs = []
 			for i in range(1, 4):

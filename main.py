@@ -349,7 +349,8 @@ while True:
                 display.fill(BGCOLOUR)
                 # draw the different options buttons
                 screen_text("Arrows to move, Space to jump, ESCAPE to pause, E to Interact with the Merchant.", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 50)
-                screen_text("Beware of the trees.", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 100)
+                screen_text("Click to attack.", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 100)
+                screen_text("Beware of the trees, dodge the orbs.", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 120)
                 if back_button.draw(screen) and clicked == False:
                     button_sound.play()
                     menu_mode = "main"
@@ -571,7 +572,8 @@ while True:
             screen.fill(PURPLEBG)
             logo(mini_logo_img, rescaled_width / 2 + 35, 0)
             screen_text("Arrows to move, Space to jump, ESCAPE to pause, E to Interact with the Merchant", 22, WHITE, SCREEN_WIDTH / 2, screen_height / 2 + 50)
-            screen_text("Press any key to play", 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4 + 20)
+            screen_text("Left click to attack", 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4 + 20)
+            screen_text("Press any key to play", 22, WHITE, SCREEN_WIDTH / 2, screen_height * 3 / 4 + 40)
         elif state == ENDSCREEN:
             screen.fill(BGCOLOUR)
 

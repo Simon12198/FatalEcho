@@ -16,7 +16,7 @@ swordsman attack 7;7;7;7;7
 swordsman run 7;7;7;7;7;7;7
 shield shield 50;5;5;10
 wizard idle 1
-wizard attack 7;7;7
+wizard attack 14;14;14
 wizard run 7;7;7;7;7;7;7
 orb idle 1
 orb moving 1
