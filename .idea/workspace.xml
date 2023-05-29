@@ -5,44 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="33c247da-1e0d-4f0d-aa22-2ea3cb81e57e" name="Changes" comment="copy">
-      <change afterPath="$PROJECT_DIR$/data/graphics/images/mushroom_enemy-Recovered.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/player/attack/attack_0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/player/attack/attack_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/player/attack/attack_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/player/attack/attack_3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/player/attack/attack_4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/player/damage_attack/damage_attack_0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/player/damage_attack/damage_attack_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/player/damage_attack/damage_attack_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/player/damage_attack/damage_attack_3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/player/damage_attack/damage_attack_4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/shield/shield/shield_0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/shield/shield/shield_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/shield/shield/shield_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/graphics/shield/shield/shield_3.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/animation" beforeDir="false" afterPath="$PROJECT_DIR$/data/graphics/animation" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/Final_Score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/Final_Score" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/levels/level_0/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_0/score" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level1.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level1.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Grass.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Grass.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Platform.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Platform.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Wizard.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Wizard.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_1/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/score" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level2.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level2.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Grass.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Grass.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Platform.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Platform.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Wizard.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Wizard.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_2/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/score" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Gold.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Gold.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Grass.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Grass.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/Level_3_Platform.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/Level_3_Platform.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_3/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/score" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_4/level_4_Grass.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_4/level_4_Grass.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_4/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_4/score" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_5/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_5/score" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/score" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/level_map.py" beforeDir="false" afterPath="$PROJECT_DIR$/level_map.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -391,7 +355,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685322916932</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="copy">
+      <created>1685370698866</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1685370698867</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

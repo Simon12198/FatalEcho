@@ -155,7 +155,18 @@ class Level:
 			return True
 		else:
 			return False
+	def weapon_trade_check(self):
+		if self.coin_inv >= 20:
+			return True
+		else:
+			return False
 
+	def weapon_trade(self, boolean):
+		if boolean == True:
+			self.coin_inv -= 20
+			self.damage += 10
+		elif boolean == False:
+			return True
 	def armour_trade(self, boolean):
 		if boolean == True:
 			self.coin_inv -= 20
@@ -792,14 +803,14 @@ class Level:
 							player.invincibility = True
 							self.start_time_attack = time.time()
 							self.health -= 2
-						if player.player_attack:
-							swordsman.health -= 10
-						if player.rect.x > swordsman.rect.x:
-							swordsman.change_flip(True)
-							self.direction = 'left'
-						elif player.rect.x < swordsman.rect.x:
-							swordsman.change_flip(False)
-							self.direction = 'right'
+					if player.player_attack:
+						swordsman.health -= 20
+					if player.rect.x > swordsman.rect.x:
+						swordsman.change_flip(True)
+						self.direction = 'left'
+					elif player.rect.x < swordsman.rect.x:
+						swordsman.change_flip(False)
+						self.direction = 'right'
 				else:
 					if self.direction == 'left':
 						swordsman.change_flip(False)
@@ -831,8 +842,6 @@ class Level:
 							orbleft = enemy.Orb(wizard.rect.centerx - 20, wizard.rect.centery - 16, -1)
 							self.orb_group.add(orbleft)
 							self.ammo -= 1
-						if player.player_attack:
-							wizard.health -= 20
 						if self.shoot_cooldown > 0:
 							self.shoot_cooldown -= 1
 							self.ammo += 1
@@ -844,8 +853,11 @@ class Level:
 						elif self.direction == 'right':
 							wizard.change_flip(True)
 							self.direction = ''
-					if wizard.health == 0:
-						self.wizard_group.remove(wizard)
+				if wizard.rect.colliderect(player.rect):
+					if player.player_attack:
+						wizard.health -= 20
+				if wizard.health == 0:
+					self.wizard_group.remove(wizard)
 					# check collision with characters
 					for orb in self.orb_group.sprites():
 						if pygame.Rect.colliderect(orb.rect, player.rect):
@@ -926,11 +938,11 @@ class Level:
 	def draw_bg(self):
 		self.keys = pygame.key.get_pressed()
 		player = self.player.sprite
-		if self.keys[pygame.K_RIGHT] and self.player_direction < 3000:
+		if self.keys[pygame.K_RIGHT] and self.player_direction < 6000:
 			self.player_direction += 1
 		elif self.keys[pygame.K_LEFT] and self.player_direction > 0:
 			self.player_direction -= 1
-		for x in range(40):
+		for x in range(150):
 			speed = 1
 			for i in self.bg_imgs:
 				self.surface.blit(i, ((x * 600) - self.player_direction * speed, 0))
