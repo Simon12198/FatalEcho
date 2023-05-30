@@ -33,7 +33,8 @@ class ground_tile(Tiles):
 
 
 class Level:
-	def __init__(self, game_map, path, surface, name, last_level = False, info = [0, [10, 10], 0]):
+	def __init__(self, game_map, path, surface, name, last_level = False, info = [0, [10, 10], 0, 10], framerate = 60):
+		self.framerate = framerate
 		self.game_map = game_map
 		self.surface = surface
 		self.name = name
@@ -51,7 +52,7 @@ class Level:
 		self.bad_ending = False
 		self.good_ending = False
 		self.imposter_kill = False
-		self.damage = 10
+		self.damage = info[-1]
 		self.time_attacked = 0
 		self.start_time_attack = time.time()
 		self.dead = False
@@ -806,7 +807,7 @@ class Level:
 							self.start_time_attack = time.time()
 							self.health -= 2
 					if player.player_attack:
-						swordsman.health -= 20
+						swordsman.health -= self.damage
 					if player.rect.x > swordsman.rect.x:
 						swordsman.change_flip(True)
 						self.direction = 'left'
@@ -857,17 +858,17 @@ class Level:
 							self.direction = ''
 				if wizard.rect.colliderect(player.rect):
 					if player.player_attack:
-						wizard.health -= 20
+						wizard.health -= self.damage
 				if wizard.health == 0:
 					self.wizard_group.remove(wizard)
 					# check collision with characters
-					for orb in self.orb_group.sprites():
-						if pygame.Rect.colliderect(orb.rect, player.rect):
-							orb.kill()
-							if player.invincibility == False:
-								player.invincibility = True
-								self.start_time_attack = time.time()
-								self.health -= 1.5
+				for orb in self.orb_group.sprites():
+					if pygame.Rect.colliderect(orb.rect, player.rect):
+						orb.kill()
+						if player.invincibility == False:
+							self.start_time_attack = time.time()
+							self.health -= 1.5
+							player.invincibility = True
 	def end_level(self):
 			loading_imgs = []
 			for i in range(1, 4):
@@ -943,10 +944,10 @@ class Level:
 		if self.on_platform == True:
 			for platform in self.platform_group.sprites():
 				self.player_direction += 1 * platform.move_direction
-			if self.keys[pygame.K_RIGHT] and self.player_direction < 6000:
-				self.player_direction += 1
-			elif self.keys[pygame.K_LEFT] and self.player_direction > 0:
-				self.player_direction -= 1
+		if self.keys[pygame.K_RIGHT] and self.player_direction < 6000:
+			self.player_direction += 1
+		elif self.keys[pygame.K_LEFT] and self.player_direction > 0:
+			self.player_direction -= 1
 		for x in range(150):
 			speed = 1
 			for i in self.bg_imgs:
@@ -1050,11 +1051,9 @@ class Level:
 		while self.imposter_kill and self.health >= 0:
 			self.dead = True
 			self.imposter_attacking += 1
-
 			if self.health <= 0:
 				self.imposter_kill = False
-				time.sleep(0.5)
-			time.sleep(0.5)
+			self.framerate = 20
 			break
 		# player
 		player = self.player.sprite

@@ -1,6 +1,6 @@
 def cal_score(score_points, coin_count, time_taken, enemy_kills = 0):
     score_points += (coin_count + enemy_kills * 2) * 50
-    score_points -= time_taken * 5
+    score_points -= time_taken * 10
     return score_points
 
 def score_keeping(path,score_points, info = [0, 0, 0], name = ''): #info = [coin, time, enemy_kills]
@@ -24,7 +24,7 @@ def score_keeping(path,score_points, info = [0, 0, 0], name = ''): #info = [coin
         sections = line.split(' ')
         player_name = sections[0]
         if name != '':
-            current_name_score[player_name] = sections[1]
+            current_name_score[player_name] = int(sections[1])
     sorted_score = {player_name: score for player_name, score in sorted(current_name_score.items(), key = lambda score: score[1], reverse = True)}
     for players in sorted_score.keys():
         if name == players:

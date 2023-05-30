@@ -5,38 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="33c247da-1e0d-4f0d-aa22-2ea3cb81e57e" name="Changes" comment="copy">
-      <change beforePath="$PROJECT_DIR$/data/graphics/dust_particles/run/0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/dust_particles/run/1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/dust_particles/run/2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/dust_particles/run/3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/dust_particles/run/4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/graphics/dust_particles/run/5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level1.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level1.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_1/Level_1_Grass.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/Level_1_Grass.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level2.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level2.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_2/Level_2_Grass.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/Level_2_Grass.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_6/level" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_6/score" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Barrier.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Blobs.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Death.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Gold.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Grass.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Imposter.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Merchant.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Mushroom.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Npc.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Platform.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Slopes.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Spawn.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Swordsman.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_TopSlopes.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Trees.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/level_7_Wizard.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/levels/level_7/score" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/Final_Score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/Final_Score" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_0/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_0/score" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_1/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_1/score" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_2/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_2/score" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_3/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_3/score" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_4/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_4/score" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/level_5/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/level_5/score" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/levels/score" beforeDir="false" afterPath="$PROJECT_DIR$/data/levels/score" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/level_map.py" beforeDir="false" afterPath="$PROJECT_DIR$/level_map.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/score.py" beforeDir="false" afterPath="$PROJECT_DIR$/score.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +73,34 @@
       <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\graphics\wizard\attack" />
       <recent name="C:\Users\simon\PycharmProjects\MergingCopyFatalEcho\data\graphics\wizard\run" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MergingCopyFatalEcho" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -411,7 +419,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685381564844</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="copy">
+      <created>1685382012751</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1685382012751</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

@@ -17,6 +17,7 @@ screen_height = 640
 
 rescaled_width = 600
 rescaled_height = 320
+framerate = 60
 
 WINDOW_SIZE = (SCREEN_WIDTH, screen_height)  # set up window size
 screen = pygame.display.set_mode(WINDOW_SIZE)  # initiate screen
@@ -139,7 +140,7 @@ screen_change = False
 main_music = 'unpaused'
 merchant_mode = 'main'
 merchant_collide = False
-level = Level([], 'data/levels/level_0/', display, 'Simon')
+level = Level([], 'data/levels/level_0/', display, 'Simon', framerate = framerate)
 RUNNING, PAUSE, TITLESCREEN, STARTSCREEN, ENDSCREEN, EASTEREGG, EEPAUSE, MERCHANT, MAINMENU = 0, 1, 2, 3, 4, 5, 6, 7, 8
 state = TITLESCREEN
 stop_drawing = False
@@ -210,7 +211,10 @@ while True:
         if state == RUNNING:
             if level.imposter_kill:
                 pygame.mixer_music.pause()
+                framerate = 10
                 main_music = 'paused'
+            else:
+                framerate = 60
             if main_music == 'paused' and level.imposter_kill == False:
                 menu_music.stop()
                 pygame.mixer_music.unpause()
@@ -221,16 +225,18 @@ while True:
                 level.draw_hearts()
             screen.blit(pygame.transform.scale(display, WINDOW_SIZE), (0, 0))
             if level.done:
+                if n == 0:
+                    info = [0, [10, 10], 0, 10]
                 if n == 5:
                     level = Level([], f'data/levels/level_{n}/', display, 'Simon', True,
-                                  [level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
+                                  [level.mushroom_inv, [level.health, level.max_health], level.coin_inv], framerate)
                 elif n > 5:
                     state = ENDSCREEN
                     n = 1
                     current_level = 0
                 else:
                     level = Level([], f'data/levels/level_{n}/', display, 'Simon',
-                                  info=[level.mushroom_inv, [level.health, level.max_health], level.coin_inv])
+                                  info=[level.mushroom_inv, [level.health, level.max_health], level.coin_inv, level.damage])
                 current_level = n
                 n += 1
             if level.game_over:
@@ -619,5 +625,5 @@ while True:
                 n = 0
         pygame.display.flip()
 
-        clock.tick(60)
+        clock.tick(framerate)
         continue
